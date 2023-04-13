@@ -80,7 +80,9 @@ void GameBoard::unload() {
     loaded = false;
     rows = cols = 0;
     delete [] ans;
+    ans = NULL;
     delete [] mask;
+    mask = NULL;
     bombCount = flagCount = openBlankCount = remainBlankCount = 0;
     loseGame = false;
 }
