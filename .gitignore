@@ -1,0 +1,9 @@
+# Qt configure
+*-Debug
+*-Release
+*-Profile
+*.pro.user
+
+# Doxygen documents
+*/out/html
+
