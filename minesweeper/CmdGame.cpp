@@ -64,7 +64,9 @@ void standby(GameBoard& board) {
                                 (unsigned)stoul(matchResults[2]),
                                 (unsigned)stoul(matchResults[3]));
         } else if (regex_match(input, matchResults, iregex("Load +RandomRate +([0-9]+) +([0-9]+) +([0-9.]+)"))) {
-            cout << "Not implemented yet\n";
+            status = board.load((unsigned)stoul(matchResults[1]),
+                                (unsigned)stoul(matchResults[2]),
+                                stof(matchResults[3]));
         }
         // Print ...
         else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))) {

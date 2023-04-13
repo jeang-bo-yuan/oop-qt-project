@@ -73,6 +73,7 @@ bool GameBoard::load(const string& file) {
         fin >> ansCopy[idx];
     }
     if (fin.fail()) {
+        rows = cols = 0;
         cerr << "(Too few slots) ";
         return false;
     }
@@ -121,6 +122,40 @@ bool GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
     for (unsigned idx = 0; idx < totals; ++idx) { // shuffle
         unsigned idx2 = rand() % totals;
         swap(ansCopy[idx], ansCopy[idx2]);
+    }
+
+    // init ansCopy by setting number and count bomb
+    this->putNumberOnAns_CountBombAndBlank();
+
+    loaded = true;
+    return true;
+}
+
+bool GameBoard::load(unsigned row, unsigned col, float rate) {
+    this->unload();
+    unsigned totals = row * col;
+
+    // allocate memory
+    char* ansCopy = new char[totals];
+    this->ans = ansCopy;
+    this->mask = new char[totals];
+    if (ansCopy == NULL || mask == NULL) {
+        cerr << "(not enough memory) ";
+        return false;
+    }
+
+    // set
+    rows = row;
+    cols = col;
+
+    // init mask
+    memset(mask, (char)Mask::closed, totals);
+
+    // init ans
+    srand((unsigned)time(NULL));
+    for (unsigned idx = 0; idx < totals; ++idx) {
+        float randomFloat = (float)rand() / (float)RAND_MAX;
+        ansCopy[idx] = (randomFloat <= rate ? 'X' : 'O');
     }
 
     // init ansCopy by setting number and count bomb

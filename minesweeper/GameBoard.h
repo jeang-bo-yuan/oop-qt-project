@@ -91,6 +91,11 @@ public:
      */
     bool load(unsigned row, unsigned col, unsigned bomb);
     /**
+     * \brief Load with specific possibility to generate bomb
+     * \return true -> Success; false -> Fail
+     */
+    bool load(unsigned row, unsigned col, float rate);
+    /**
      * \brief unload the board
      * \post free merory of ans and mask, and let isloaded() return false
      */
