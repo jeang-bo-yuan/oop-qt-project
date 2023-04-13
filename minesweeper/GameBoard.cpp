@@ -87,8 +87,10 @@ void GameBoard::unload() {
 
 bool GameBoard::leftClick(unsigned row, unsigned col) {
     if (!onBoard(row, col) // not on board
-        || getMask(row, col) != (char)Mask::closed  // (row, col) is open or flag
-        || getMask(row, col) != (char)Mask::quetion)
+        || ( // (row, col) is open or flagged
+            getMask(row, col) != (char)Mask::closed && (getMask(row, col) != (char)Mask::quetion)
+            )
+        )
         return false;
 
     // open and set it as answer
@@ -129,19 +131,21 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
 
 bool GameBoard::rightClick(unsigned row, unsigned col) {
     if (!onBoard(row, col)  // not on board
-        || getMask(row, col) != (char)Mask::closed // (row, col) is open
-        || getMask(row, col) != (char)Mask::flag
-        || getMask(row, col) != (char)Mask::quetion)
+        || ( // (row, col) is open
+            getMask(row, col) != (char)Mask::closed && getMask(row, col) != (char)Mask::flag
+            && getMask(row, col) != (char)Mask::quetion
+            )
+        )
         return false;
 
     switch(getMask(row, col)) {
     case (char)Mask::closed:
         setMask(row, col, (char)Mask::flag);
-        --remainBlankCount;
+        ++flagCount;
         break;
     case (char)Mask::flag:
         setMask(row, col, (char)Mask::quetion);
-        ++remainBlankCount;
+        --flagCount;
         break;
     case (char)Mask::quetion:
         setMask(row, col, (char)Mask::closed);
@@ -155,7 +159,7 @@ bool GameBoard::rightClick(unsigned row, unsigned col) {
 GameBoard::GameOver GameBoard::gameOver() const {
     if (loseGame)
         return GameOver::lose;
-    else if (remainBlankCount == 0 && bombCount == flagCount)
+    else if (remainBlankCount == 0)
         return GameOver::win;
     else
         return GameOver::playing;

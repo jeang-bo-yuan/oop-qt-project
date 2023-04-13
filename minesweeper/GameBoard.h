@@ -26,21 +26,23 @@ private:
     unsigned cols;
     /**
      * @brief Game Answer
-     * 非地雷 : 則顯示周圍9宮格內的炸彈數量(0~8)
-     * 地雷 : X
+     * @details load 後不變
+     * - 非地雷 : 則顯示周圍9宮格內的炸彈數量(0~8)
+     * - 地雷 : X
      */
     const char* ans;
     /**
      * @brief Game Board
-     * 未開啟的格子:#
-     * 已開啟的空白格子:顯示周圍9宮格內的炸彈數量(0~8)
-     * 標註棋子:f （不可被LeftClick）
-     * 標註問號:? （可被LeftClick）
+     * @details
+     * - 未開啟的格子:#
+     * - 已開啟的空白格子:顯示周圍9宮格內的炸彈數量(0~8)
+     * - 標註棋子:f （不可被LeftClick）
+     * - 標註問號:? （可被LeftClick）
      */
     char* mask;
 
-    unsigned bombCount;
-    unsigned flagCount;  //!< 已插flag
+    unsigned bombCount;  //!< 載入後不變
+    unsigned flagCount;  //!< 已插flag，受GambBoard::rightClick影響
     unsigned openBlankCount; //!< 已開啟
     unsigned remainBlankCount; //!< 未開啟
     bool loseGame;
@@ -117,12 +119,16 @@ public:
      * @brief 左鍵點擊(row, col)，開啟格子，遇0擴散
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟or已插flag, out of range
+     * @post --remainBlankCount and ++openBlankCount if open a slot
+     *       set losegame if open a mine
      */
     bool leftClick(unsigned row, unsigned col);
     /**
      * @brief 右鍵點擊(row, col)，在flag, quetion, closed輪替
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟, out of range
+     * @post ++flagcount if closed -> flag;
+     *       --flagcount if flag -> question
      */
     bool rightClick(unsigned row, unsigned col);
     /**

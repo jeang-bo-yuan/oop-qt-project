@@ -28,7 +28,7 @@ int startCmdGame() {
         board.unload();
 
         standby(board);
-        //playing(board);
+        playing(board);
         int need_restart = ending(board);
         if (need_restart)
             continue;
@@ -85,11 +85,41 @@ void standby(GameBoard& board) {
 
 /**
  * @brief playing mode
- * 可處理的command：
- * -
+ * @details 可處理的command：
+ * - LeftClick <row> <col>
+ * - RightClick <row> <col>
+ * - Print ...
  */
-void playing(GameBoard&) {
+void playing(GameBoard& board) {
+    string input;
+    smatch matchResults;
 
+    while (!(bool)board.gameOver() && getline(cin, input)) {
+        cout << "<" << input << "> : ";
+        bool status = false;
+
+        // LeftClick <row> <col>
+        if (regex_match(input, matchResults, iregex("LeftClick +([0-9]+) +([0-9]+)"))) {
+            status = board.leftClick((unsigned)stoul(matchResults[1]), (unsigned)stoul(matchResults[2]));
+        }
+        // RightClick <row> <col>
+        else if (regex_match(input, matchResults, iregex("RightClick +([0-9]+) +([0-9]+)"))) {
+            status = board.rightClick((unsigned)stoul(matchResults[1]), (unsigned)stoul(matchResults[2]));
+        }
+        // Print ...
+        else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))) {
+            status = printCommand(matchResults[1], board, "Playing");
+            if (status)
+                continue;
+        }
+
+        cout << (status ? "Success" : "Failed") << '\n';
+    }
+
+    if (board.gameOver() == GameBoard::GameOver::win)
+        cout << "You win the game\n";
+    else
+        cout << "You lose the game\n";
 }
 
 /**
@@ -97,9 +127,9 @@ void playing(GameBoard&) {
  * @return 1 -> need restart;
  *         0 -> no need
  * @details 可處理的command：
- * - Print ...
  * - Replay
  * - Quit
+ * - Print ...
  */
 int ending(GameBoard& board) {
     string input;
