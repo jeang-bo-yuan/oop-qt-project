@@ -11,6 +11,6 @@
 //! case insensitive compare
 #define iequal(str1, str2) (std::regex_match(str1, iregex(str2)))
 
-int start_cmd_game();
+int startCmdGame();
 
 #endif // COMMON_H

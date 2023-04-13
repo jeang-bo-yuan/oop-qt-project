@@ -14,13 +14,13 @@ static void standby(GameBoard&);
 static void playing(GameBoard&);
 static int ending(GameBoard&);
 
-static bool print_command(const std::string& info, const GameBoard& board, const char* state);
+static bool printCommand(const std::string& info, const GameBoard& board, const char* state);
 
 /**********************//**
- * @brief start_cmd_game
+ * @brief startCmdGame
  * @return EXIT_SUCCESS
 **************************/
-int start_cmd_game() {
+int startCmdGame() {
     GameBoard board;
 
     //while(1) {
@@ -63,7 +63,7 @@ void standby(GameBoard& board) {
         }
         // Print ...
         else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))) {
-            status = print_command(matchResults[1], board, "Standby");
+            status = printCommand(matchResults[1], board, "Standby");
             if (status)
                 continue;
         }
@@ -97,18 +97,23 @@ void playing(GameBoard&) {
  * @brief ending mode
  * @return 1 -> need restart;
  *         0 -> no need
+ * 可處理的command：
+ * - Print ...
+ * - Replay
+ * - Quit
  */
 int ending(GameBoard&) {
-
+    string input;
+    smatch matchResults;
 }
 
 /**
- * @brief print_command
+ * @brief printCommand
  * @param info - information to print
  * @return true -> Success;
  *         false -> Failed
  */
-bool print_command(const std::string& info, const GameBoard& board, const char* state) {
+bool printCommand(const std::string& info, const GameBoard& board, const char* state) {
     if (iequal(info, "GameState")) {
         cout << state << '\n';
     }
