@@ -19,19 +19,22 @@ static bool printCommand(const std::string& info, const GameBoard& board, const 
 /**********************//**
  * @brief startCmdGame
  * @return EXIT_SUCCESS
+ * 依序呼叫 standby(), playing(), ending()
 **************************/
 int startCmdGame() {
     GameBoard board;
 
-    //while(1) {
+    while(1) {
+        board.unload();
+
         standby(board);
-    /*    playing(board);
+        //playing(board);
         int need_restart = ending(board);
         if (need_restart)
             continue;
         else
             break;
-    }*/
+    }
 
     return EXIT_SUCCESS;
 }
@@ -51,7 +54,7 @@ void standby(GameBoard& board) {
 
     while (getline(cin, input)){
         cout << "<" << input << "> : ";
-        bool status = true;
+        bool status = false;
 
         // Load Boardfile
         if (regex_match(input, matchResults, iregex("Load +Boardfile +([^ ]+)"))){
@@ -72,11 +75,7 @@ void standby(GameBoard& board) {
             if (board.isloaded()) {
                 cout << "Success\n";
                 return;
-            } else {
-                status = false;
             }
-        } else {
-            status = false;
         }
 
         cout << (status ? "Success" : "Failed") << '\n';
@@ -102,9 +101,35 @@ void playing(GameBoard&) {
  * - Replay
  * - Quit
  */
-int ending(GameBoard&) {
+int ending(GameBoard& board) {
     string input;
     smatch matchResults;
+
+    while (getline(cin, input)) {
+        cout << "<" << input << "> : ";
+        bool status = false;
+
+        // Replay
+        if (iequal(input, "Replay")) {
+            cout << "Success\n";
+            return 1;
+        }
+        // Quit
+        else if (iequal(input, "Quit")) {
+            cout << "Success\n";
+            return 0;
+        }
+        // Print
+        else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))){
+            status = printCommand(matchResults[1], board, "GameOver");
+            if (status)
+                continue;
+        }
+
+        cout << (status ? "Success" : "Failed") << '\n';
+    }
+
+    return 0;
 }
 
 /**
