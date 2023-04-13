@@ -53,12 +53,13 @@ void standby(GameBoard& board) {
         cout << "<" << input << "> : ";
         bool status = true;
 
+        // Load Boardfile
         if (regex_match(input, matchResults, iregex("Load +Boardfile +([^ ]+)"))){
-            cout << "Loading " << matchResults[1] << '\n';
+            status = board.load(matchResults[1]);
         } else if (regex_match(input, matchResults, iregex("Load +RandomCount +([0-9]+) +([0-9]+) +([0-9]+)"))) {
-            cout << "Loading " << matchResults[1] << "*" << matchResults[2] << " board with " << matchResults[3] << " bombs\n";
+            cout << "Not implemented yet\n";
         } else if (regex_match(input, matchResults, iregex("Load +RandomRate +([0-9]+) +([0-9]+) +([0-9.]+)"))) {
-            cout << "Loading " << matchResults[1] << "*" << matchResults[2] << " board with " << matchResults[3] << "% to have bombs\n";
+            cout << "Not implemented yet\n";
         }
         // Print ...
         else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))) {
@@ -85,6 +86,8 @@ void standby(GameBoard& board) {
 
 /**
  * @brief playing mode
+ * 可處理的command：
+ * -
  */
 void playing(GameBoard&) {
 
@@ -111,10 +114,22 @@ bool print_command(const std::string& info, const GameBoard& board, const char* 
     }
     else if (board.isloaded()) {
         if (iequal(info, "GameBoard")) {
-            cout << "Game Board\n";
+            cout.put('\n');
+            for (unsigned row = 0; row < board.rowSize(); ++row) {
+                for (unsigned col = 0; col < board.colSize(); ++col) {
+                    cout << board.getMask(row, col) << ' ';
+                }
+                cout.put('\n');
+            }
         }
         else if (iequal(info, "GameAnswer")) {
-            cout << "Game Answer\n";
+            cout.put('\n');
+            for (unsigned row = 0; row < board.rowSize(); ++row) {
+                for (unsigned col = 0; col < board.colSize(); ++col) {
+                    cout << board.getAnswer(row, col) << ' ';
+                }
+                cout.put('\n');
+            }
         }
         else if (iequal(info, "BombCount")) {
             cout << board.getBombCount() << '\n';

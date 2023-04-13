@@ -1,20 +1,43 @@
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
 #include <stddef.h>
+#include <string>
 
 class GameBoard
 {
+public: //member enumeration type
+    enum class Ans : char {
+        mine = 'X'
+    };
+    enum class Mask : char {
+        closed = '#',
+        flag = 'f',
+        quetion = '?'
+    };
+
 private:
     bool loaded;
     unsigned rows;
     unsigned cols;
+    /**
+     * @brief Game Answer
+     * 非地雷 : 則顯示周圍9宮格內的炸彈數量(0~8)
+     * 地雷 : X
+     */
     const char* ans;
+    /**
+     * @brief Game Board
+     * 未開啟的格子:#
+     * 已開啟的空白格子:顯示周圍9宮格內的炸彈數量(0~8)
+     * 標註棋子:f （不可被LeftClick）
+     * 標註問號:? （可被LeftClick）
+     */
     char* mask;
 
     unsigned bombCount;
     unsigned flagCount;
-    unsigned openBlankCount;
-    unsigned remainBlankCount;
+    unsigned openBlankCount; //!< 已開啟
+    unsigned remainBlankCount; //!< 未開啟
 public:
     //! Default Ctor
     GameBoard()
@@ -25,9 +48,21 @@ public:
     GameBoard(const GameBoard&)=delete;
     //! deleted
     GameBoard& operator=(const GameBoard&)=delete;
+    //! Destructor
+    ~GameBoard() { unload(); }
 
     // Load Board
     bool isloaded() const {return loaded;}
+    /**
+     * \brief Load from file
+     * \return true -> Success; false -> Fail
+     */
+    bool load(const std::string& file);
+    /**
+     * \brief unload the board
+     * \post free merory of ans and mask, and let isloaded() return false
+     */
+    void unload();
 
 
     // Access board
