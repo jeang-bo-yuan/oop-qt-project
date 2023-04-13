@@ -19,7 +19,7 @@ static bool printCommand(const std::string& info, const GameBoard& board, const 
 /**********************//**
  * @brief startCmdGame
  * @return EXIT_SUCCESS
- * 依序呼叫 standby(), playing(), ending()
+ * @details 依序呼叫 standby(), playing(), ending()
 **************************/
 int startCmdGame() {
     GameBoard board;
@@ -41,7 +41,7 @@ int startCmdGame() {
 
 /**
  * @brief standby mode
- * 可處理的command:
+ * @details 可處理的command:
  * - Load BoardFile <file>
  * - Load RandomCount <M> <N> <炸彈數量>
  * - Load RandomRate <M> <N> <炸彈生成機率>
@@ -96,7 +96,7 @@ void playing(GameBoard&) {
  * @brief ending mode
  * @return 1 -> need restart;
  *         0 -> no need
- * 可處理的command：
+ * @details 可處理的command：
  * - Print ...
  * - Replay
  * - Quit

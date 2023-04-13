@@ -22,7 +22,7 @@
 static void assert_file_open(FILE* fp, const std::string& name = "");
 
 /***************************************//**
- * @brief handle command line arguments and call startCmdGame or show window
+ * @brief handle command line arguments and call \ref startCmdGame or show window
  * @param argc
  * @param argv
  * @return EXIT_FAILURE or EXIT_SUCCESS

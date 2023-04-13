@@ -39,6 +39,10 @@ private:
     unsigned openBlankCount; //!< 已開啟
     unsigned remainBlankCount; //!< 未開啟
 public:
+    /**
+     * \name Constructor & Destructor
+     */
+    ///@{
     //! Default Ctor
     GameBoard()
         : loaded(false), rows(0), cols(0), ans(NULL), mask(NULL),
@@ -50,8 +54,12 @@ public:
     GameBoard& operator=(const GameBoard&)=delete;
     //! Destructor
     ~GameBoard() { unload(); }
+    ///@}
 
-    // Load Board
+    /**
+     * \name Load Board
+     */
+    ///@{
     bool isloaded() const {return loaded;}
     /**
      * \brief Load from file
@@ -63,9 +71,13 @@ public:
      * \post free merory of ans and mask, and let isloaded() return false
      */
     void unload();
+    ///@}
 
 
-    // Access board
+    /**
+     * \name Access board
+     */
+    ///@{
     /**
      * \brief Access Game Answer
      * \warning No boundary check
@@ -87,13 +99,17 @@ public:
     unsigned rowSize() const { return rows; }
     //! Get number of total cols of the board
     unsigned colSize() const { return cols; }
+    ///@}
 
-    // get count
+    /**
+     * \name Get count
+     */
+    ///@{
     unsigned getBombCount() const {return bombCount; }
     unsigned getFlagCount() const {return flagCount; }
     unsigned getOpenBlankCount() const {return openBlankCount; }
     unsigned getRemainBlankCount() const {return remainBlankCount; }
-
+    ///@}
 };
 
 #endif // GAMEBOARD_H
