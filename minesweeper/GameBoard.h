@@ -53,7 +53,10 @@ private:
     unsigned remainBlankCount; //!< 未開啟且不是炸彈的格子數
     bool loseGame;
 private: // private member function
+    void forceSetAns(unsigned row, unsigned col, char c) { ((char*)ans)[row * cols + col] = c;}
     void setMask(unsigned row, unsigned col, char c) { mask[row * cols + col] = c; }
+    void putNumberOnAns_CountBombAndBlank();
+
 public:
     /**
      * \name Constructor & Destructor
@@ -82,6 +85,11 @@ public:
      * \return true -> Success; false -> Fail
      */
     bool load(const std::string& file);
+    /**
+     * \brief Load with specific amount of mines
+     * \return true -> Success; false -> Fail
+     */
+    bool load(unsigned row, unsigned col, unsigned bomb);
     /**
      * \brief unload the board
      * \post free merory of ans and mask, and let isloaded() return false

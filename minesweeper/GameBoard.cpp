@@ -3,8 +3,39 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
+
+void GameBoard::putNumberOnAns_CountBombAndBlank() {
+    bombCount = 0;
+    remainBlankCount = 0;
+    for (unsigned row = 0; row < rows; ++row) {
+        for (unsigned col = 0; col < cols; ++col) {
+            if (getAnswer(row, col) == (char)Ans::mine) {
+                ++bombCount;
+                continue;
+            }
+
+            ++remainBlankCount;
+
+            // count bombs around (row, col)
+            unsigned count = 0;
+            if (onBoard(row - 1, col) && getAnswer(row - 1, col) == (char)Ans::mine) ++count;
+            if (onBoard(row - 1, col - 1) && getAnswer(row - 1, col - 1) == (char)Ans::mine) ++count;
+            if (onBoard(row, col - 1) && getAnswer(row, col - 1) == (char)Ans::mine) ++count;
+            if (onBoard(row + 1, col - 1) && getAnswer(row + 1, col - 1) == (char)Ans::mine) ++count;
+            if (onBoard(row + 1, col) && getAnswer(row + 1, col) == (char)Ans::mine) ++count;
+            if (onBoard(row + 1, col + 1) && getAnswer(row + 1, col + 1) == (char)Ans::mine) ++count;
+            if (onBoard(row, col + 1) && getAnswer(row, col + 1) == (char)Ans::mine) ++count;
+            if (onBoard(row - 1, col + 1) && getAnswer(row - 1, col + 1) == (char)Ans::mine) ++count;
+
+            // set
+            forceSetAns(row, col, '0' + count);
+        }
+    }
+}
 
 bool GameBoard::load(const string& file) {
     this->unload();
@@ -29,6 +60,7 @@ bool GameBoard::load(const string& file) {
     ans = ansCopy; // point to same place
     mask = new char[totals];
     if (ans == NULL || mask == NULL) {
+        rows = cols = 0;
         cerr << "(not enough memory) ";
         return false;
     }
@@ -46,35 +78,57 @@ bool GameBoard::load(const string& file) {
     }
 
     // init ansCopy by setting number and count bomb
-    for (unsigned row = 0; row < rows; ++row) {
-        for (unsigned col = 0; col < cols; ++col) {
-            if (getAnswer(row, col) == (char)Ans::mine) {
-                ++bombCount;
-                continue;
-            }
-
-            ++remainBlankCount;
-
-            // count bombs around (row, col)
-            unsigned count = 0;
-            if (onBoard(row - 1, col) && getAnswer(row - 1, col) == (char)Ans::mine) ++count;
-            if (onBoard(row - 1, col - 1) && getAnswer(row - 1, col - 1) == (char)Ans::mine) ++count;
-            if (onBoard(row, col - 1) && getAnswer(row, col - 1) == (char)Ans::mine) ++count;
-            if (onBoard(row + 1, col - 1) && getAnswer(row + 1, col - 1) == (char)Ans::mine) ++count;
-            if (onBoard(row + 1, col) && getAnswer(row + 1, col) == (char)Ans::mine) ++count;
-            if (onBoard(row + 1, col + 1) && getAnswer(row + 1, col + 1) == (char)Ans::mine) ++count;
-            if (onBoard(row, col + 1) && getAnswer(row, col + 1) == (char)Ans::mine) ++count;
-            if (onBoard(row - 1, col + 1) && getAnswer(row - 1, col + 1) == (char)Ans::mine) ++count;
-
-            // set
-            ansCopy[row * cols + col] = char('0' + count);
-        }
-    }
+    this->putNumberOnAns_CountBombAndBlank();
 
     loaded = true;
     return true;
 }
 
+bool GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
+    this->unload();
+    unsigned totals = row * col;
+
+    if (bomb >= totals) {
+        cerr << "(too many bombs) ";
+        return false;
+    }
+
+    if (bomb == 0) {
+        cerr << "(too few bombs) ";
+        return false;
+    }
+
+    // allocate memory
+    char* ansCopy = new char[totals];
+    this->ans = ansCopy;
+    this->mask = new char[totals];
+    if (ansCopy == NULL || mask == NULL) {
+        cerr << "(not enough memory) ";
+        return false;
+    }
+
+    // set
+    rows = row;
+    cols = col;
+
+    // init mask
+    memset(mask, (char)Mask::closed, totals);
+
+    // init ans
+    memset(ansCopy, (char)Ans::mine, bomb);
+    memset(ansCopy + bomb, 'O', totals - bomb);
+    srand((unsigned)time(NULL));
+    for (unsigned idx = 0; idx < totals; ++idx) { // shuffle
+        unsigned idx2 = rand() % totals;
+        swap(ansCopy[idx], ansCopy[idx2]);
+    }
+
+    // init ansCopy by setting number and count bomb
+    this->putNumberOnAns_CountBombAndBlank();
+
+    loaded = true;
+    return true;
+}
 
 void GameBoard::unload() {
     loaded = false;
