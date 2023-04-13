@@ -82,4 +82,81 @@ void GameBoard::unload() {
     delete [] ans;
     delete [] mask;
     bombCount = flagCount = openBlankCount = remainBlankCount = 0;
+    loseGame = false;
+}
+
+bool GameBoard::leftClick(unsigned row, unsigned col) {
+    if (!onBoard(row, col) // not on board
+        || getMask(row, col) != (char)Mask::closed  // (row, col) is open or flag
+        || getMask(row, col) != (char)Mask::quetion)
+        return false;
+
+    // open and set it as answer
+    setMask(row, col, getAnswer(row, col));
+
+    // update count
+    --remainBlankCount;
+    ++openBlankCount;
+
+    switch (getAnswer(row, col)) {
+    case (char)Ans::mine:
+        // 開到地雷
+        // print all mine on mask
+        for (unsigned row = 0; row < rows; ++row){
+            for (unsigned col = 0; col < cols; ++col) {
+                if (getAnswer(row, col) == (char)Ans::mine)
+                    setMask(row, col, getAnswer(row, col));
+            }
+        }
+        // set as gameover
+        loseGame = true;
+        break;
+    case '0':
+        // 擴散
+        leftClick(row - 1, col);
+        leftClick(row - 1, col - 1);
+        leftClick(row, col - 1);
+        leftClick(row + 1, col - 1);
+        leftClick(row + 1, col);
+        leftClick(row + 1, col + 1);
+        leftClick(row, col + 1);
+        leftClick(row - 1, col + 1);
+        break;
+    }
+
+    return true;
+}
+
+bool GameBoard::rightClick(unsigned row, unsigned col) {
+    if (!onBoard(row, col)  // not on board
+        || getMask(row, col) != (char)Mask::closed // (row, col) is open
+        || getMask(row, col) != (char)Mask::flag
+        || getMask(row, col) != (char)Mask::quetion)
+        return false;
+
+    switch(getMask(row, col)) {
+    case (char)Mask::closed:
+        setMask(row, col, (char)Mask::flag);
+        --remainBlankCount;
+        break;
+    case (char)Mask::flag:
+        setMask(row, col, (char)Mask::quetion);
+        ++remainBlankCount;
+        break;
+    case (char)Mask::quetion:
+        setMask(row, col, (char)Mask::closed);
+        break;
+    }
+
+    return true;
+}
+
+
+GameBoard::GameOver GameBoard::gameOver() const {
+    if (loseGame)
+        return GameOver::lose;
+    else if (remainBlankCount == 0 && bombCount == flagCount)
+        return GameOver::win;
+    else
+        return GameOver::playing;
 }

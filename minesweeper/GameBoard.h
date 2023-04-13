@@ -14,6 +14,11 @@ public: //member enumeration type
         flag = 'f',
         quetion = '?'
     };
+    enum class GameOver  {
+        playing = 0,
+        win = 1,
+        lose = 2
+    };
 
 private:
     bool loaded;
@@ -35,9 +40,12 @@ private:
     char* mask;
 
     unsigned bombCount;
-    unsigned flagCount;
+    unsigned flagCount;  //!< 已插flag
     unsigned openBlankCount; //!< 已開啟
     unsigned remainBlankCount; //!< 未開啟
+    bool loseGame;
+private: // private member function
+    void setMask(unsigned row, unsigned col, char c) { mask[row * cols + col] = c; }
 public:
     /**
      * \name Constructor & Destructor
@@ -46,7 +54,7 @@ public:
     //! Default Ctor
     GameBoard()
         : loaded(false), rows(0), cols(0), ans(NULL), mask(NULL),
-        bombCount(0), flagCount(0), openBlankCount(0), remainBlankCount(0)
+        bombCount(0), flagCount(0), openBlankCount(0), remainBlankCount(0), loseGame(false)
     {}
     //! deleted
     GameBoard(const GameBoard&)=delete;
@@ -99,6 +107,31 @@ public:
     unsigned rowSize() const { return rows; }
     //! Get number of total cols of the board
     unsigned colSize() const { return cols; }
+    ///@}
+
+    /**
+     * \name Playing
+     */
+    ///@{
+    /**
+     * @brief 左鍵點擊(row, col)，開啟格子，遇0擴散
+     * @return true -> Success; false -> Failed
+     * @details Fail: 已被開啟or已插flag, out of range
+     */
+    bool leftClick(unsigned row, unsigned col);
+    /**
+     * @brief 右鍵點擊(row, col)，在flag, quetion, closed輪替
+     * @return true -> Success; false -> Failed
+     * @details Fail: 已被開啟, out of range
+     */
+    bool rightClick(unsigned row, unsigned col);
+    /**
+     * @brief Check if game is over
+     * @return GameOver::playing -> not over;
+     *         GameOver::win -> win;
+     *         GameOver::lose -> lose
+     */
+    GameOver gameOver() const;
     ///@}
 
     /**
