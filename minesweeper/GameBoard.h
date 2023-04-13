@@ -21,7 +21,7 @@ public: //member enumeration type
     };
     //! state of the game board
     enum class GameOver  {
-        playing = 0,  //!< game isn't over
+        nope = 0,  //!< game isn't over
         win = 1,  //!< player win the game
         lose = 2 //!< player lose the game
     };

@@ -50,6 +50,7 @@ bool GameBoard::load(const string& file) {
     // enter rows and cols
     fin >> rows >> cols;
     if (fin.fail()) {
+        this->unload();
         cerr << "(rows cols Format error) ";
         return false;
     }
@@ -60,7 +61,7 @@ bool GameBoard::load(const string& file) {
     ans = ansCopy; // point to same place
     mask = new char[totals];
     if (ans == NULL || mask == NULL) {
-        rows = cols = 0;
+        this->unload();
         cerr << "(not enough memory) ";
         return false;
     }
@@ -73,7 +74,7 @@ bool GameBoard::load(const string& file) {
         fin >> ansCopy[idx];
     }
     if (fin.fail()) {
-        rows = cols = 0;
+        this->unload();
         cerr << "(Too few slots) ";
         return false;
     }
@@ -88,13 +89,17 @@ bool GameBoard::load(const string& file) {
 bool GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
     this->unload();
     unsigned totals = row * col;
+    rows = row;
+    cols = col;
 
     if (bomb >= totals) {
+        this->unload();
         cerr << "(too many bombs) ";
         return false;
     }
 
     if (bomb == 0) {
+        this->unload();
         cerr << "(too few bombs) ";
         return false;
     }
@@ -104,13 +109,10 @@ bool GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
     this->ans = ansCopy;
     this->mask = new char[totals];
     if (ansCopy == NULL || mask == NULL) {
+        this->unload();
         cerr << "(not enough memory) ";
         return false;
     }
-
-    // set
-    rows = row;
-    cols = col;
 
     // init mask
     memset(mask, (char)Mask::closed, totals);
@@ -134,19 +136,18 @@ bool GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
 bool GameBoard::load(unsigned row, unsigned col, float rate) {
     this->unload();
     unsigned totals = row * col;
+    rows = row;
+    cols = col;
 
     // allocate memory
     char* ansCopy = new char[totals];
     this->ans = ansCopy;
     this->mask = new char[totals];
     if (ansCopy == NULL || mask == NULL) {
+        this->unload();
         cerr << "(not enough memory) ";
         return false;
     }
-
-    // set
-    rows = row;
-    cols = col;
 
     // init mask
     memset(mask, (char)Mask::closed, totals);
@@ -155,7 +156,7 @@ bool GameBoard::load(unsigned row, unsigned col, float rate) {
     srand((unsigned)time(NULL));
     for (unsigned idx = 0; idx < totals; ++idx) {
         float randomFloat = (float)rand() / (float)RAND_MAX;
-        ansCopy[idx] = (randomFloat <= rate ? 'X' : 'O');
+        ansCopy[idx] = (randomFloat < rate ? 'X' : 'O');
     }
 
     // init ansCopy by setting number and count bomb
@@ -249,12 +250,12 @@ bool GameBoard::rightClick(unsigned row, unsigned col) {
 
 GameBoard::GameOver GameBoard::gameOver() const {
     if (!isloaded())
-        return GameOver::playing;
+        return GameOver::nope;
 
     if (loseGame)
         return GameOver::lose;
     else if (remainBlankCount == 0)
         return GameOver::win;
     else
-        return GameOver::playing;
+        return GameOver::nope;
 }
