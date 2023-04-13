@@ -159,6 +159,9 @@ bool GameBoard::rightClick(unsigned row, unsigned col) {
 
 
 GameBoard::GameOver GameBoard::gameOver() const {
+    if (!isloaded())
+        return GameOver::playing;
+
     if (loseGame)
         return GameOver::lose;
     else if (remainBlankCount == 0)

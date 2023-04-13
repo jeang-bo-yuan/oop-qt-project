@@ -3,21 +3,27 @@
 #include <stddef.h>
 #include <string>
 
+/**
+ * @brief The game board of minesweeper
+ */
 class GameBoard
 {
 public: //member enumeration type
+    //! icon on answer board
     enum class Ans : char {
-        mine = 'X'
+        mine = 'X' //!< icon of mine
     };
+    //! icon on mask board
     enum class Mask : char {
-        closed = '#',
-        flag = 'f',
-        quetion = '?'
+        closed = '#', //!< icon of default slot
+        flag = 'f',  //!< icon of flag
+        quetion = '?'  //!< icon of question mark
     };
+    //! state of the game board
     enum class GameOver  {
-        playing = 0,
-        win = 1,
-        lose = 2
+        playing = 0,  //!< game isn't over
+        win = 1,  //!< player win the game
+        lose = 2 //!< player lose the game
     };
 
 private:
@@ -41,10 +47,10 @@ private:
      */
     char* mask;
 
-    unsigned bombCount;  //!< 載入後不變
-    unsigned flagCount;  //!< 已插flag，受GambBoard::rightClick影響
-    unsigned openBlankCount; //!< 已開啟
-    unsigned remainBlankCount; //!< 未開啟
+    unsigned bombCount;  //!< 實際炸彈數，載入後不變
+    unsigned flagCount;  //!< mask上的flag數，受GambBoard::rightClick()影響
+    unsigned openBlankCount; //!< 已開啟的格子數
+    unsigned remainBlankCount; //!< 未開啟且不是炸彈的格子數
     bool loseGame;
 private: // private member function
     void setMask(unsigned row, unsigned col, char c) { mask[row * cols + col] = c; }
@@ -133,7 +139,7 @@ public:
     bool rightClick(unsigned row, unsigned col);
     /**
      * @brief Check if game is over
-     * @return GameOver::playing -> not over;
+     * @return GameOver::playing -> not over or not loaded;
      *         GameOver::win -> win;
      *         GameOver::lose -> lose
      */
