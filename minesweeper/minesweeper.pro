@@ -9,6 +9,7 @@ CONFIG += c++17 cmdline
 SOURCES += \
         CmdGame.cpp \
         GameBoard.cpp \
+        common.cpp \
         main.cpp
 
 CONFIG += lrelease

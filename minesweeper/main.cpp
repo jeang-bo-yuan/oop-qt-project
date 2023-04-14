@@ -4,7 +4,7 @@
 *****************************************/
 /*************************************//**
  * @file main.cpp
- * @brief 負責處理命令列參數和IO重導向
+ * @brief 程式的進入點
 *****************************************/
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -17,12 +17,13 @@
 #include <stdlib.h>
 #include <string>
 
-#include "common.h"
+// in CmdGame.cpp
+extern int startCmdGame();
 
 static void assert_file_open(FILE* fp, const std::string& name = "");
 
 /***************************************//**
- * @brief handle command line arguments and call \ref startCmdGame or show window
+ * @brief Process command line arguments and transfer control to \ref startCmdGame or startGUIGame
  * @param argc
  * @param argv
  * @return EXIT_FAILURE or EXIT_SUCCESS

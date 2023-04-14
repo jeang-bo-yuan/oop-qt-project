@@ -1,4 +1,7 @@
-
+/*********************************//**
+ * \file GameBoard.cpp
+ * \brief implement GameBoard class
+*************************************/
 #include "GameBoard.h"
 #include <iostream>
 #include <fstream>
