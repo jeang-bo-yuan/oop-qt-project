@@ -4,7 +4,7 @@
 *****************************/
 #ifndef COMMON_H
 #define COMMON_H
-#include <GameBoard.h>
+#include "GameBoard.h"
 #include <regex>
 
 //! case insensitive regex

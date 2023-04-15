@@ -8,7 +8,9 @@ CONFIG += c++17 cmdline
 
 SOURCES += \
         CmdGame.cpp \
+        GUIGame.cpp \
         GameBoard.cpp \
+        GeneralGameWidget.cpp \
         common.cpp \
         main.cpp
 
@@ -21,5 +23,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    GUIGame.h \
     GameBoard.h \
+    GeneralGameWidget.h \
     common.h

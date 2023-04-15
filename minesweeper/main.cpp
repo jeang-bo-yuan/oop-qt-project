@@ -8,17 +8,15 @@
 *****************************************/
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <QApplication> // QApplication
-#include <QWidget> // QWidget
-#include <QHBoxLayout>
-#include <QPushButton>
-
 #include <iostream>
 #include <stdlib.h>
 #include <string>
 
 // in CmdGame.cpp
 extern int startCmdGame();
+
+// in GUIGame.cpp
+extern int startGUIGame(int argc, char* argv[]);
 
 static void assert_file_open(FILE* fp, const std::string& name = "");
 
@@ -41,24 +39,14 @@ int main(int argc, char *argv[])
     }
     // minesweeper.exe GUI
     else if (argc == 1 || (argc == 2 && argv[1] == std::string("GUI"))) {
-        QApplication a(argc, argv);
-        QWidget w;
-
-        QHBoxLayout* layout = new QHBoxLayout;
-        w.setLayout(layout);
-
-        layout->addWidget(new QPushButton("Not supported"));
-        layout->addWidget(new QPushButton("Close"));
-
-        w.show();
-        return a.exec();
+        return startGUIGame(argc, argv);
     }
     else {
         std::cerr << "arg error!!\n"
                      "\tminesweeper.exe CommandInput\n"
                      "\tminesweeper.exe CommandFile <in> <out>\n"
                      "\tminesweeper.exe GUI\n";
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     return startCmdGame();

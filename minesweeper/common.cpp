@@ -12,7 +12,7 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
     cout << "<Print " << info << "> : ";
 
     if (iequal(info, "GameState")) {
-        cout << state << '\n';
+        cout << state << endl;
         return;
     }
     else if (board.isloaded()) {
@@ -24,6 +24,7 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
                 }
                 cout.put('\n');
             }
+            cout << flush;
             return;
         }
         else if (iequal(info, "GameAnswer")) {
@@ -34,31 +35,32 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
                 }
                 cout.put('\n');
             }
+            cout << flush;
             return;
         }
         else if (iequal(info, "BombCount")) {
-            cout << board.getBombCount() << '\n';
+            cout << board.getBombCount() << endl;
             return;
         }
         else if (iequal(info, "FlagCount")) {
-            cout << board.getFlagCount() << '\n';
+            cout << board.getFlagCount() << endl;
             return;
         }
         else if(iequal(info, "OpenBlankCount")) {
-            cout << board.getOpenBlankCount() << '\n';
+            cout << board.getOpenBlankCount() << endl;
             return;
         }
         else if(iequal(info, "RemainBlankCount")) {
-            cout << board.getRemainBlankCount() << '\n';
+            cout << board.getRemainBlankCount() << endl;
             return;
         }
     }
 
-    cout << "Failed\n";
+    cout << "Failed" << endl;
     return;
 }
 
 void printCommandSuccessOrNot(const std::string& cmd, bool status) {
-    cout << "<" << cmd << "> : " << (status ? "Success" : "Failed") << '\n';
+    cout << "<" << cmd << "> : " << (status ? "Success" : "Failed") << endl;
 }
 
