@@ -3,6 +3,7 @@
 #define GUIGAME_H
 #include <QWidget>
 #include <QLineEdit>
+#include <QSpinBox>
 #include "GeneralGameWidget.h"
 
 
@@ -19,9 +20,18 @@
 class StandbyWidget : public GeneralGameWidget{
     Q_OBJECT
 
-    // loader1
+    // loader1 (from file)
     QLineEdit* const loader1File;
 
+    // loader2 (specified rows, cols, bombs)
+    QSpinBox* const loader2Row;
+    QSpinBox* const loader2Col;
+    QSpinBox* const loader2Bomb;
+
+    // loader3 (specified rows, cols, rate)
+    QSpinBox* const loader3Row;
+    QSpinBox* const loader3Col;
+    QDoubleSpinBox* const loader3Rate;
 
 public:
     /**
