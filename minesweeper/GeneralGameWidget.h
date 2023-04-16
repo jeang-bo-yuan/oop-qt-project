@@ -5,7 +5,6 @@
 
 #include <QWidget>
 #include <QGridLayout>
-#include <string>
 #include "GameBoard.h"
 
 /**
@@ -18,12 +17,12 @@
 class GeneralGameWidget : public QWidget {
 protected:
     GameBoard* const board_p;
-    const std::string state;
+    const QString state;
     QVBoxLayout* const vLayout;
     QGridLayout* const infoBox;
 
     //! ctor
-    GeneralGameWidget(GameBoard*, const std::string s, QWidget* = nullptr);
+    GeneralGameWidget(GameBoard*, const QString& s, QWidget* = nullptr);
     //! deleted copy ctor
     GeneralGameWidget(const GeneralGameWidget&) =delete;
     //! deleted assignment
