@@ -1,7 +1,4 @@
-/***************************************//**
- * \file GameBoard.h
- * \brief GameBoard class
-*******************************************/
+
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
 #include <stddef.h>

@@ -1,4 +1,7 @@
-
+/****************************************************//**
+ * \file GeneralGameWidget.cpp
+ * \brief implement GeneralGameWidget class
+********************************************************/
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>

@@ -24,16 +24,28 @@ class StandbyWidget : public GeneralGameWidget{
 
 
 public:
-    //! ctor
-    StandbyWidget(GameBoard*, QWidget* = nullptr);
+    /**
+     * @brief constructor
+     * @param board_p - pointer to Minesweeper GameBoard
+     * @param parent - parent QWidget
+     */
+    StandbyWidget(GameBoard* board_p, QWidget* parent = nullptr);
     //! deleted copy ctor
     StandbyWidget(const StandbyWidget&) =delete;
     //! deleted assignment
     StandbyWidget& operator=(const StandbyWidget&) =delete;
 
 public slots:
+    /**
+     * @brief 載入Minesweeper的盤面
+     * @param loaderIdx - 欲使用的loader的index
+     */
     void loadBoard(int loaderIdx);
 signals:
+    /**
+     * @brief 當load按鈕被按下時發出
+     * @param loaderIdx - 選定的loader的index
+     */
     void loadButClicked(int loaderIdx);
 };
 

@@ -16,7 +16,7 @@ static void playing(GameBoard&);
 static int ending(GameBoard&);
 
 /**********************//**
- * @brief startCmdGame
+ * @brief 開始Command Line Game的流程
  * @return EXIT_SUCCESS
  * @details 依序呼叫 standby(), playing(), ending()
 **************************/

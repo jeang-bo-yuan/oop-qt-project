@@ -21,8 +21,13 @@ protected:
     QVBoxLayout* const vLayout;
     QGridLayout* const infoBox;
 
-    //! ctor
-    GeneralGameWidget(GameBoard*, const QString& s, QWidget* = nullptr);
+    /**
+     * @brief constructor
+     * @param board_p - pointer to Minesweeper GameBoard
+     * @param state - 顯示的Game State
+     * @param parent - parent QWidget
+     */
+    GeneralGameWidget(GameBoard* board_p, const QString& state, QWidget* parent = nullptr);
     //! deleted copy ctor
     GeneralGameWidget(const GeneralGameWidget&) =delete;
     //! deleted assignment

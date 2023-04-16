@@ -1,3 +1,8 @@
+/**************************************************//**
+ * \file GUIGame.cpp
+ * \brief 初始化GUI Game會用到的widget
+ * \details 內含startGUIGame 及 StandbyWidget的實作
+******************************************************/
 #include <QApplication>
 #include <QComboBox>
 #include <QStackedWidget>
@@ -9,6 +14,12 @@
 #include "common.h"
 #include "GUIGame.h"
 
+/**
+ * @brief 開始GUI Game的初始化
+ * @param argc
+ * @param argv
+ * @return QApplication::exec()
+ */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
     GameBoard board;
@@ -18,6 +29,8 @@ int startGUIGame(int argc, char* argv[]) {
 
     return app.exec();
 }
+
+// StandbyWidget的實作
 
 StandbyWidget::StandbyWidget(GameBoard* p, QWidget* parent)
     : GeneralGameWidget(p, "Standby", parent), loader1File(new QLineEdit)

@@ -12,16 +12,16 @@
 #include <stdlib.h>
 #include <string>
 
-// in CmdGame.cpp
+//! \details defined in CmdGame.cpp
 extern int startCmdGame();
 
-// in GUIGame.cpp
+//! \details defined in GUIGame.cpp
 extern int startGUIGame(int argc, char* argv[]);
 
 static void assert_file_open(FILE* fp, const std::string& name = "");
 
 /***************************************//**
- * @brief Process command line arguments and transfer control to \ref startCmdGame or startGUIGame
+ * @brief Process command line arguments and transfer control to \ref startCmdGame or \ref startGUIGame
  * @param argc
  * @param argv
  * @return EXIT_FAILURE or EXIT_SUCCESS
