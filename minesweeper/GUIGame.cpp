@@ -23,15 +23,20 @@
  */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
+
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
 
-    QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p));
+    StandbyWidget* standby = new StandbyWidget(board_p);
     standby->show();
+
+    PlayingWidget* playing = new PlayingWidget(board_p);
+
+    QObject::connect(standby, SIGNAL(startGame()), playing, SLOT(initGameBoard()));
 
     return app.exec();
 }
 
-// StandbyWidget的實作
+// StandbyWidget的實作 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     : GeneralGameWidget(p, "Standby", parent),
@@ -67,6 +72,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         QWidget* stack1 = new QWidget;
         QHBoxLayout* sLayout1 = new QHBoxLayout(stack1);
 
+        loader1File->setText("./boards/board1.txt");
         QPushButton* fileBut = new QPushButton("browse...");
         QFileDialog* fileDialog = new QFileDialog(this, "Board File", ".", "*.txt");
 
@@ -88,6 +94,9 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         loader2Col->setMinimum(1);
         loader2Bomb->setMinimum(1);
 
+        loader2Row->setValue(2);
+        loader2Col->setValue(2);
+
         sLayout2->addWidget(new QLabel("Row: "), 1);
         sLayout2->addWidget(loader2Row, 2);
         sLayout2->addWidget(new QLabel("Col: "), 1);
@@ -106,6 +115,10 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         loader3Col->setMinimum(1);
         loader3Rate->setRange(0, 1);
         loader3Rate->setSingleStep(0.05);
+
+        loader3Row->setValue(2);
+        loader3Col->setValue(2);
+        loader3Rate->setValue(0.3);
 
         sLayout3->addWidget(new QLabel("Row: "), 1);
         sLayout3->addWidget(loader3Row, 2);
@@ -176,4 +189,54 @@ void StandbyWidget::loadBoard(int loaderIdx) {
         printCommandSuccessOrNot(qPrintable(cmd), board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat()));
         break;
     }
+}
+
+// PlayingWidget的實作 //////////////////////////////////////////////////////////////////////////////////////////////
+
+PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
+    : GeneralGameWidget(p, "Playing", parent)
+{
+// infobox
+    {
+        infoBox->addWidget(new QLabel("Bomb Count : "), 1, 0);
+        QLabel* bomb = new QLabel(QString::number(board_p->getBombCount()));
+        bomb->setObjectName("BOMB");
+        infoBox->addWidget(bomb , 1, 1);
+
+        infoBox->addWidget(new QLabel("Flag Count : "), 1, 2);
+        QLabel* flag = new QLabel(QString::number(board_p->getFlagCount()));
+        flag->setObjectName("FLAG");
+        infoBox->addWidget(flag , 1, 3);
+
+        infoBox->addWidget(new QLabel("Open Blank Count : "), 2, 0);
+        QLabel* openBlank = new QLabel(QString::number(board_p->getOpenBlankCount()));
+        openBlank->setObjectName("OPEN_BLANK");
+        infoBox->addWidget(openBlank, 2, 1);
+
+        infoBox->addWidget(new QLabel("Remain Blank Count : "), 2, 2);
+        QLabel* remainBlank = new QLabel(QString::number(board_p->getRemainBlankCount()));
+        remainBlank->setObjectName("REMAIN_BLANK");
+        infoBox->addWidget(remainBlank, 2, 3);
+    }
+
+}
+
+void PlayingWidget::initGameBoard() {
+    updateInfoBox();
+
+    this->show();
+}
+
+void PlayingWidget::updateInfoBox() {
+    QLabel* p = this->findChild<QLabel*>("BOMB");
+    p->setText(QString::number(board_p->getBombCount()));
+
+    p = this->findChild<QLabel*>("FLAG");
+    p->setText(QString::number(board_p->getFlagCount()));
+
+    p = this->findChild<QLabel*>("OPEN_BLANK");
+    p->setText(QString::number(board_p->getOpenBlankCount()));
+
+    p = this->findChild<QLabel*>("REMAIN_BLANK");
+    p->setText(QString::number(board_p->getRemainBlankCount()));
 }

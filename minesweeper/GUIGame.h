@@ -63,4 +63,35 @@ signals:
     void startGame();
 };
 
+/**
+ * @brief Define the layout of game widget when in Playing mode
+ * @details
+ * From top to down
+ * - infoBox
+ * - three print button
+ *
+ */
+class PlayingWidget : public GeneralGameWidget {
+    Q_OBJECT
+
+
+public:
+    /**
+     * @brief constructor
+     * @param p - pointer to minesweeper GameBoard
+     * @param parent - parent QWidget
+     */
+    PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent = nullptr);
+    //! deleted copy constructor
+    PlayingWidget(const PlayingWidget&) =delete;
+    //! deleted assignment
+    PlayingWidget& operator=(const PlayingWidget&) =delete;
+
+public slots:
+    void initGameBoard();
+    void updateInfoBox();
+signals:
+
+};
+
 #endif // GUIGAME_H
