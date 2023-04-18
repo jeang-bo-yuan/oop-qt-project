@@ -16,7 +16,7 @@ GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString
 // information
     // game state
     infoBox->addWidget(new QLabel("Game State : "), 0, 0);
-    infoBox->addWidget(new QLabel(qPrintable(this->state)), 0, 1);
+    infoBox->addWidget(new QLabel(this->state), 0, 1);
     vLayout->addLayout(infoBox);
 
 // for print
@@ -38,7 +38,5 @@ GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString
     printBox->addWidget(forAnswer);
     printBox->addWidget(forState);
     vLayout->addLayout(printBox);
-
-    vLayout->addSpacing(30);
 }
 

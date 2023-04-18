@@ -57,6 +57,10 @@ signals:
      * @param loaderIdx - 選定的loader的index
      */
     void loadButClicked(int loaderIdx);
+    /**
+     * @brief 當開始遊戲時發出
+     */
+    void startGame();
 };
 
 #endif // GUIGAME_H

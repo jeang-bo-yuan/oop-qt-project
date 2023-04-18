@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QLabel>
+#include <iostream>
 
 #include "GameBoard.h"
 #include "common.h"
@@ -124,6 +125,28 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     }
 
     vLayout->addWidget(settingStack);
+
+// startgame button
+    {
+        QPushButton* startBut = new QPushButton("Start Game");
+        QObject::connect(startBut, &QPushButton::clicked, this, [this]() {
+            std::cout << "<StartGame> : ";
+            if (this->board_p->isloaded()){
+                std::cout << "Success" << std::endl;
+                this->hide();
+                emit this->startGame();
+            }
+            else {
+                std::cout << "Failed" << std::endl;
+            }
+        });
+
+        QHBoxLayout* startBox = new QHBoxLayout;
+        startBox->addStretch(1);
+        startBox->addWidget(startBut, 2);
+        startBox->addStretch(1);
+        vLayout->addLayout(startBox);
+    }
 }
 
 void StandbyWidget::loadBoard(int loaderIdx) {
