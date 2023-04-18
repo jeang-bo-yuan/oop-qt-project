@@ -39,7 +39,7 @@ public:
      * @param board_p - pointer to Minesweeper GameBoard
      * @param parent - parent QWidget
      */
-    StandbyWidget(GameBoard* board_p, QWidget* parent = nullptr);
+    StandbyWidget(std::shared_ptr<GameBoard> board_p, QWidget* parent = nullptr);
     //! deleted copy ctor
     StandbyWidget(const StandbyWidget&) =delete;
     //! deleted assignment

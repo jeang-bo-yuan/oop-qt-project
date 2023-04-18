@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QGridLayout>
+#include <memory>
 #include "GameBoard.h"
 
 /**
@@ -16,7 +17,7 @@
  */
 class GeneralGameWidget : public QWidget {
 protected:
-    GameBoard* const board_p;
+    const std::shared_ptr<GameBoard> board_p;
     const QString state;
     QVBoxLayout* const vLayout;
     QGridLayout* const infoBox;
@@ -27,7 +28,7 @@ protected:
      * @param state - 顯示的Game State
      * @param parent - parent QWidget
      */
-    GeneralGameWidget(GameBoard* board_p, const QString& state, QWidget* parent = nullptr);
+    GeneralGameWidget(std::shared_ptr<GameBoard> board_p, const QString& state, QWidget* parent = nullptr);
     //! deleted copy ctor
     GeneralGameWidget(const GeneralGameWidget&) =delete;
     //! deleted assignment

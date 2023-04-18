@@ -22,9 +22,9 @@
  */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    GameBoard board;
+    std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
 
-    QScopedPointer<StandbyWidget> standby(new StandbyWidget(&board));
+    QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p));
     standby->show();
 
     return app.exec();
@@ -32,7 +32,7 @@ int startGUIGame(int argc, char* argv[]) {
 
 // StandbyWidget的實作
 
-StandbyWidget::StandbyWidget(GameBoard* p, QWidget* parent)
+StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     : GeneralGameWidget(p, "Standby", parent),
     loader1File(new QLineEdit),
     loader2Row(new QSpinBox), loader2Col(new QSpinBox), loader2Bomb(new QSpinBox),

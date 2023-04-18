@@ -10,7 +10,7 @@
 #include "common.h"
 
 
-GeneralGameWidget::GeneralGameWidget(GameBoard* p, const QString& s,QWidget* parent)
+GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString& s,QWidget* parent)
     : QWidget(parent), board_p(p), state(s), vLayout(new QVBoxLayout(this)), infoBox(new QGridLayout)
 {
 // information
@@ -38,5 +38,7 @@ GeneralGameWidget::GeneralGameWidget(GameBoard* p, const QString& s,QWidget* par
     printBox->addWidget(forAnswer);
     printBox->addWidget(forState);
     vLayout->addLayout(printBox);
+
+    vLayout->addSpacing(30);
 }
 
