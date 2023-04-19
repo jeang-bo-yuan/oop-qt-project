@@ -26,26 +26,35 @@ void MineButton::mouseReleaseEvent(QMouseEvent* event) {
 }
 
 void MineButton::setText(char txt) {
+    QPushButton::setText(QString(txt == (char)GameBoard::Mask::closed ? '\0' : txt));
+
     switch (txt) {
     case (char)GameBoard::Mask::closed:
-        QPushButton::setText(QString());
         setStyleSheet(BORDER "background-color: white");
         break;
     case (char)GameBoard::Mask::flag:
-        QPushButton::setText(QString(txt));
         setStyleSheet(BORDER "background-color: blue");
         break;
     case (char)GameBoard::Mask::quetion:
-        QPushButton::setText(QString(txt));
         setStyleSheet(BORDER "background-color: pink");
         break;
     case (char)GameBoard::Ans::mine:
-        QPushButton::setText(QString(txt));
         setStyleSheet(BORDER "background-color: red");
         break;
     default:
-        QPushButton::setText(QString(txt));
-        setStyleSheet(BORDER "background-color: white");
+        QString styleSheet(BORDER "background-color: white;" "font-family: impact;");
+
+        if (txt == '0')
+            styleSheet += "color: limegreen;";
+        else if (txt == '1')
+            styleSheet += "color: green;";
+        else if (txt == '2')
+            styleSheet += "color: darkorange;";
+        else
+            styleSheet += "color: red;";
+
+
+        setStyleSheet(styleSheet);
         break;
     }
 }

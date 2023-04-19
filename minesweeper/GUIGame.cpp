@@ -54,7 +54,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     loader3Row(new QSpinBox), loader3Col(new QSpinBox), loader3Rate(new QDoubleSpinBox)
 {
     vLayout->addStretch(1);
-    vLayout->addSpacing(10);
+    vLayout->addSpacing(20);
 
 // loader list + load button
     QHBoxLayout* listAndBut = new QHBoxLayout;
