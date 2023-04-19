@@ -230,8 +230,6 @@ PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
 void PlayingWidget::initGameBoard() {
     updateInfoBox();
 
-    delete guiBoard;
-
     guiBoard = new QGridLayout;
     for (size_t r = 0; r < board_p->rowSize(); ++r) {
         for (size_t c = 0; c < board_p->colSize(); ++c) {
@@ -323,6 +321,17 @@ void PlayingWidget::checkIfGameOver() {
 
     if (msg->exec() == QMessageBox::Yes) {
         this->hide();
+
+        // delete current board
+        for (int r = 0; r < (int)board_p->rowSize(); ++r) {
+            for (int c = 0; c < (int)board_p->colSize(); ++c) {
+                MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition(r, c)->widget());
+                delete button;
+            }
+        }
+        delete guiBoard;
+        guiBoard = nullptr;
+
         emit replay();
     }
     else {
