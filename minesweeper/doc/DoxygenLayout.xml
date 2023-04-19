@@ -16,21 +16,25 @@
       <tab type="interfaceindex" visible="$ALPHABETICAL_INDEX" title=""/>
       <tab type="interfacehierarchy" visible="yes" title="" intro=""/>
     </tab>
+    <!-- class -->
     <tab type="classlist" visible="yes" title="" intro=""/>
     <tab type="hierarchy" visible="yes" title="" intro=""/>
     <tab type="classes" visible="no" title="">
       <tab type="classindex" visible="$ALPHABETICAL_INDEX" title=""/>
       <tab type="classmembers" visible="no" title="" intro=""/>
     </tab>
+    <!-- struct -->
     <tab type="structs" visible="yes" title="">
       <tab type="structlist" visible="yes" title="" intro=""/>
       <tab type="structindex" visible="$ALPHABETICAL_INDEX" title=""/>
     </tab>
+    <!-- exception -->
     <tab type="exceptions" visible="yes" title="">
       <tab type="exceptionlist" visible="yes" title="" intro=""/>
       <tab type="exceptionindex" visible="$ALPHABETICAL_INDEX" title=""/>
       <tab type="exceptionhierarchy" visible="yes" title="" intro=""/>
     </tab>
+    <!-- File -->
     <tab type="filelist" visible="yes" title="" intro=""/>
     <tab type="files" visible="no" title="">
       <tab type="globals" visible="no" title="" intro=""/>

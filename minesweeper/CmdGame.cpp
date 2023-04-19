@@ -3,7 +3,6 @@
  * @brief 負責Command Line Game的流程
  ***************************/
 #include "common.h"
-#include "GameBoard.h"
 #include <iostream>
 #include <stdlib.h>
 #include <string>

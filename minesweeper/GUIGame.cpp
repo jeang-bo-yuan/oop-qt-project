@@ -1,7 +1,7 @@
 /**************************************************//**
  * \file GUIGame.cpp
  * \brief 初始化GUI Game會用到的widget
- * \details 內含startGUIGame 及 StandbyWidget的實作
+ * \details 內含\ref startGUIGame 及 \ref StandbyWidget, \ref PlayingWidget 的實作
 ******************************************************/
 #include <QApplication>
 #include <QComboBox>
@@ -13,10 +13,9 @@
 #include <iostream>
 #include <string>
 
-#include "GameBoard.h"
 #include "common.h"
 #include "GUIGame.h"
-#include "MineButtion.h"
+#include "MineButton.h"
 
 /**
  * @brief 開始GUI Game的初始化

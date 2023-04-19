@@ -1,5 +1,9 @@
+/************************************************//**
+ * \file MineButton.cpp
+ * \brief MineButton class
+****************************************************/
 
-#include "MineButtion.h"
+#include "MineButton.h"
 #include <QMouseEvent>
 #include "GameBoard.h"
 

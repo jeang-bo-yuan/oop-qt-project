@@ -5,5 +5,4 @@
 *.pro.user
 
 # Doxygen documents
-*/out/html
-
+*/doc/html

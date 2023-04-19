@@ -73,13 +73,15 @@ signals:
  * From top to down
  * - infoBox
  * - three print button
- *
+ * - the guiGameBoard
  */
 class PlayingWidget : public GeneralGameWidget {
     Q_OBJECT
 
     //! 包含按鈕
     QGridLayout* guiBoard;
+
+    void checkIfGameOver();
 
 public:
     /**
@@ -92,8 +94,6 @@ public:
     PlayingWidget(const PlayingWidget&) =delete;
     //! deleted assignment
     PlayingWidget& operator=(const PlayingWidget&) =delete;
-
-    void checkIfGameOver();
 
 public slots:
     //! used to initiate game board when game start
