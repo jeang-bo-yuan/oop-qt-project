@@ -51,6 +51,10 @@ public slots:
      * @param loaderIdx - 欲使用的loader的index
      */
     void loadBoard(int loaderIdx);
+    /**
+     * @brief 重新開始遊戲
+     */
+    void replay();
 signals:
     /**
      * @brief 當load按鈕被按下時發出
@@ -74,6 +78,8 @@ signals:
 class PlayingWidget : public GeneralGameWidget {
     Q_OBJECT
 
+    //! 包含按鈕
+    QGridLayout* guiBoard;
 
 public:
     /**
@@ -87,11 +93,31 @@ public:
     //! deleted assignment
     PlayingWidget& operator=(const PlayingWidget&) =delete;
 
-public slots:
-    void initGameBoard();
-    void updateInfoBox();
-signals:
+    void checkIfGameOver();
 
+public slots:
+    //! used to initiate game board when game start
+    void initGameBoard();
+
+    //! update value of infoBox
+    void updateInfoBox();
+
+    /**
+     * @brief open a block when left click on a block
+     * @param r - row of block
+     * @param c - col of block
+     */
+    void openBlock(int r, int c);
+
+    /**
+     * @brief put flag when right click on a block
+     * @param r - row of block
+     * @param c - col of block
+     */
+    void flagBlock(int r, int c);
+signals:
+    //! emit if user want to replay
+    void replay();
 };
 
 #endif // GUIGAME_H

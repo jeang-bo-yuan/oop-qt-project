@@ -11,6 +11,7 @@ SOURCES += \
         GUIGame.cpp \
         GameBoard.cpp \
         GeneralGameWidget.cpp \
+        MineButtion.cpp \
         common.cpp \
         main.cpp
 
@@ -26,4 +27,5 @@ HEADERS += \
     GUIGame.h \
     GameBoard.h \
     GeneralGameWidget.h \
+    MineButtion.h \
     common.h

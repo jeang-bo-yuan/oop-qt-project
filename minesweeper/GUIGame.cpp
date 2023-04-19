@@ -9,11 +9,14 @@
 #include <QPushButton>
 #include <QFileDialog>
 #include <QLabel>
+#include <QMessageBox>
 #include <iostream>
+#include <string>
 
 #include "GameBoard.h"
 #include "common.h"
 #include "GUIGame.h"
+#include "MineButtion.h"
 
 /**
  * @brief 開始GUI Game的初始化
@@ -25,13 +28,12 @@ int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
-
     StandbyWidget* standby = new StandbyWidget(board_p);
-    standby->show();
-
     PlayingWidget* playing = new PlayingWidget(board_p);
 
-    QObject::connect(standby, SIGNAL(startGame()), playing, SLOT(initGameBoard()));
+    standby->show();
+    QObject::connect(standby, &StandbyWidget::startGame, playing, &PlayingWidget::initGameBoard);
+    QObject::connect(playing, &PlayingWidget::replay, standby, &StandbyWidget::replay);
 
     return app.exec();
 }
@@ -191,10 +193,15 @@ void StandbyWidget::loadBoard(int loaderIdx) {
     }
 }
 
+void StandbyWidget::replay() {
+    this->show();
+    board_p->unload();
+}
+
 // PlayingWidget的實作 //////////////////////////////////////////////////////////////////////////////////////////////
 
 PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
-    : GeneralGameWidget(p, "Playing", parent)
+    : GeneralGameWidget(p, "Playing", parent), guiBoard(nullptr)
 {
 // infobox
     {
@@ -224,6 +231,24 @@ PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
 void PlayingWidget::initGameBoard() {
     updateInfoBox();
 
+    delete guiBoard;
+
+    guiBoard = new QGridLayout;
+    for (size_t r = 0; r < board_p->rowSize(); ++r) {
+        for (size_t c = 0; c < board_p->colSize(); ++c) {
+            MineButton* button = new MineButton((int)r, (int)c);
+            QObject::connect(button, &MineButton::leftClicked, this, &PlayingWidget::openBlock);
+            QObject::connect(button, &MineButton::rightClicked, this, &PlayingWidget::flagBlock);
+
+            guiBoard->addWidget(button, (int)r, (int)c);
+        }
+    }
+    guiBoard->setSpacing(0);
+    guiBoard->setContentsMargins(0, 0, 0, 0);
+    guiBoard->setAlignment(Qt::AlignCenter);
+
+    vLayout->addLayout(guiBoard);
+
     this->show();
 }
 
@@ -239,4 +264,69 @@ void PlayingWidget::updateInfoBox() {
 
     p = this->findChild<QLabel*>("REMAIN_BLANK");
     p->setText(QString::number(board_p->getRemainBlankCount()));
+}
+
+void PlayingWidget::openBlock(int r, int c) {
+    std::string cmd = "LeftClick " + std::to_string(r) + " " + std::to_string(c);
+    bool status = board_p->leftClick(r, c);
+    printCommandSuccessOrNot(cmd, status);
+
+    if (!status)
+        return;
+
+    updateInfoBox();
+    // draw
+    for (size_t r = 0; r < board_p->rowSize(); ++r) {
+        for (size_t c = 0; c < board_p->colSize(); ++c) {
+            MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition((int)r, (int)c)->widget());
+            button->setText(board_p->getMask((int)r, (int)c));
+        }
+    }
+
+    // check if game over
+    checkIfGameOver();
+}
+
+void PlayingWidget::flagBlock(int r, int c) {
+    std::string cmd = "RightClick " + std::to_string(r) + " " + std::to_string(c);
+    bool status = board_p->rightClick(r, c);
+    printCommandSuccessOrNot(cmd, status);
+
+    if (!status)
+        return;
+
+    updateInfoBox();
+    // draw
+    MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition(r, c)->widget());
+    button->setText(board_p->getMask(r, c));
+
+    // check if game over
+    checkIfGameOver();
+}
+
+void PlayingWidget::checkIfGameOver() {
+    QString title, text;
+
+    switch (board_p->gameOver()) {
+    case GameBoard::GameOver::win:
+        title = "Congratulations!!";
+        text = "<b>You Win The Game !!!!!!! </b>";
+        break;
+    case GameBoard::GameOver::lose:
+        title = "Oops...";
+        text = "<b>You Lose The Game QAQ  </b>";
+        break;
+    default:
+        return;
+    }
+    text += "Do you want to replay?";
+    QMessageBox* msg = new QMessageBox(QMessageBox::NoIcon, title, text, QMessageBox::Yes | QMessageBox::No, this);
+
+    if (msg->exec() == QMessageBox::Yes) {
+        this->hide();
+        emit replay();
+    }
+    else {
+        qApp->closeAllWindows();
+    }
 }
