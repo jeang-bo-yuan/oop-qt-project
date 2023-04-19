@@ -10,12 +10,18 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include <QFont>
 #include <iostream>
 #include <string>
 
 #include "common.h"
 #include "GUIGame.h"
 #include "MineButton.h"
+
+#define DEFAULT_ROW 10
+#define DEFAULT_COL 10
+#define DEFAULT_BOMB 20
+#define DEFAULT_RATE 0.1
 
 /**
  * @brief 開始GUI Game的初始化
@@ -25,6 +31,8 @@
  */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
+    QFont defaultFont("nomospace", 10);
+    QApplication::setFont(defaultFont);
 
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
     StandbyWidget* standby = new StandbyWidget(board_p);
@@ -45,6 +53,9 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     loader2Row(new QSpinBox), loader2Col(new QSpinBox), loader2Bomb(new QSpinBox),
     loader3Row(new QSpinBox), loader3Col(new QSpinBox), loader3Rate(new QDoubleSpinBox)
 {
+    vLayout->addStretch(1);
+    vLayout->addSpacing(10);
+
 // loader list + load button
     QHBoxLayout* listAndBut = new QHBoxLayout;
 
@@ -95,8 +106,9 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         loader2Col->setMinimum(1);
         loader2Bomb->setMinimum(1);
 
-        loader2Row->setValue(2);
-        loader2Col->setValue(2);
+        loader2Row->setValue(DEFAULT_ROW);
+        loader2Col->setValue(DEFAULT_COL);
+        loader2Bomb->setValue(DEFAULT_BOMB);
 
         sLayout2->addWidget(new QLabel("Row: "), 1);
         sLayout2->addWidget(loader2Row, 2);
@@ -117,9 +129,9 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         loader3Rate->setRange(0, 1);
         loader3Rate->setSingleStep(0.05);
 
-        loader3Row->setValue(2);
-        loader3Col->setValue(2);
-        loader3Rate->setValue(0.3);
+        loader3Row->setValue(DEFAULT_ROW);
+        loader3Col->setValue(DEFAULT_COL);
+        loader3Rate->setValue(DEFAULT_RATE);
 
         sLayout3->addWidget(new QLabel("Row: "), 1);
         sLayout3->addWidget(loader3Row, 2);
@@ -151,6 +163,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
                 emit this->startGame();
             }
             else {
+                QMessageBox::warning(this, "Can't start the game", "You haven't loaded the game board!");
                 std::cout << "Failed" << std::endl;
             }
         });
@@ -166,12 +179,13 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
 void StandbyWidget::loadBoard(int loaderIdx) {
     QString arg1, arg2, arg3;
     QString cmd;
+    bool status = true;
 
     switch (loaderIdx) {
     case 0: // use loader1
         arg1 = loader1File->text();
         cmd = QString("Load Boardfile ") + arg1;
-        printCommandSuccessOrNot(qPrintable(cmd), board_p->load(qPrintable(arg1)));
+        status = board_p->load(qPrintable(arg1));
         break;
 
     case 1: // use loader2
@@ -179,7 +193,7 @@ void StandbyWidget::loadBoard(int loaderIdx) {
         arg2 = loader2Col->text();
         arg3 = loader2Bomb->text();
         cmd = QString("Load RandomCount ") + arg1 + " " + arg2 + " " + arg3;
-        printCommandSuccessOrNot(qPrintable(cmd), board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toUInt()));
+        status = board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toUInt());
         break;
 
     case 2:
@@ -187,9 +201,13 @@ void StandbyWidget::loadBoard(int loaderIdx) {
         arg2 = loader3Col->text();
         arg3 = loader3Rate->text();
         cmd = QString("Load RandomRate ") + arg1 + " " + arg2 + " " + arg3;
-        printCommandSuccessOrNot(qPrintable(cmd), board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat()));
+        status = board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat());
         break;
     }
+
+    printCommandSuccessOrNot(qPrintable(cmd), status);
+    if (!status)
+        QMessageBox::warning(this, "Loading Failed", "Can't Load Game Board");
 }
 
 void StandbyWidget::replay() {
@@ -202,6 +220,8 @@ void StandbyWidget::replay() {
 PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     : GeneralGameWidget(p, "Playing", parent), guiBoard(nullptr)
 {
+    vLayout->addStretch(1);
+
 // infobox
     {
         infoBox->addWidget(new QLabel("Bomb Count : "), 1, 0);
@@ -245,6 +265,7 @@ void PlayingWidget::initGameBoard() {
     guiBoard->setAlignment(Qt::AlignCenter);
 
     vLayout->addLayout(guiBoard);
+    vLayout->addStretch(1);
 
     this->show();
 }
@@ -316,10 +337,13 @@ void PlayingWidget::checkIfGameOver() {
     default:
         return;
     }
-    text += "Do you want to replay?";
-    QMessageBox* msg = new QMessageBox(QMessageBox::NoIcon, title, text, QMessageBox::Yes | QMessageBox::No, this);
 
-    if (msg->exec() == QMessageBox::Yes) {
+    QMessageBox* msg = new QMessageBox(QMessageBox::NoIcon, title, text, QMessageBox::NoButton, this);
+    QPushButton* replayBut = msg->addButton("Replay", QMessageBox::NoRole);
+    msg->addButton("Quit", QMessageBox::NoRole);
+
+    msg->exec();
+    if (msg->clickedButton() == replayBut) {
         this->hide();
 
         // delete current board
@@ -329,12 +353,17 @@ void PlayingWidget::checkIfGameOver() {
                 delete button;
             }
         }
+
+        vLayout->removeItem(guiBoard);
+        vLayout->removeItem(vLayout->itemAt(vLayout->count() - 1)); // 刪掉最下面的stretch（在initGameBoard被加入）
         delete guiBoard;
         guiBoard = nullptr;
 
+        std::cout << "<Replay> : Success" << std::endl;
         emit replay();
     }
     else {
+        std::cout << "<Quit> : Success" << std::endl;
         qApp->closeAllWindows();
     }
 }
