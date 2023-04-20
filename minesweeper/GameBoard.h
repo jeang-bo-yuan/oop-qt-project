@@ -6,6 +6,11 @@
 
 /**
  * @brief The game board of minesweeper
+ * @details
+ * ## GameBoard的使用流程
+ * construct -> load -> playing (LeftClick or RightClick) -> game over -> unload / destruct
+ * @attention
+ * GameBoard使用的row, col型別為unsigned，而Qt使用的型別基本上都是int，所以在建立Widget時難免會有轉換上的問題，當row, col超過INT_MAX時可能會在GUI模式下出錯
  */
 class GameBoard
 {
@@ -63,16 +68,17 @@ public:
      * \name Constructor & Destructor
      */
     ///@{
-    //! Default Ctor
+    //! \brief Default Ctor
+    //! \details 建立空的踩地雷遊戲盤， GameBoard::isloaded() == false，
     GameBoard()
         : loaded(false), rows(0), cols(0), ans(NULL), mask(NULL),
         bombCount(0), flagCount(0), openBlankCount(0), remainBlankCount(0), loseGame(false)
     {}
-    //! deleted
+    //! deleted copy constructor
     GameBoard(const GameBoard&)=delete;
-    //! deleted
+    //! deleted assignment operator
     GameBoard& operator=(const GameBoard&)=delete;
-    //! Destructor
+    //! Destructor, call GameBoard::unload automatically
     ~GameBoard() { unload(); }
     ///@}
 
@@ -80,6 +86,10 @@ public:
      * \name Load Board
      */
     ///@{
+    /**
+     * @brief Check if the game board is loaded
+     * @return true -> if GameBoard::load is called successfully ; false -> otherwise
+     */
     bool isloaded() const {return loaded;}
     /**
      * \brief Load from file
@@ -89,16 +99,18 @@ public:
     /**
      * \brief Load with specific amount of mines
      * \return true -> Success; false -> Fail
+     * \pre 0 < bomb < GameBoard::rowSize() * GameBoard::colSize()
      */
     bool load(unsigned row, unsigned col, unsigned bomb);
     /**
      * \brief Load with specific possibility to generate bomb
      * \return true -> Success; false -> Fail
+     * \pre 0 < rate < 1
      */
     bool load(unsigned row, unsigned col, float rate);
     /**
      * \brief unload the board
-     * \post free merory of ans and mask, and let isloaded() return false
+     * \post free up merory of ans and mask, and let GameBoard::isloaded return false
      */
     void unload();
     ///@}
@@ -139,21 +151,21 @@ public:
      * @brief 左鍵點擊(row, col)，開啟格子，遇0擴散
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟or已插flag, out of range
-     * @post --remainBlankCount and ++openBlankCount if open a slot
-     *       set losegame if open a mine
+     * @post ++openBlankCount，如果成功開啟格子；--remainBlankCount，如果不是開到地雷；
+     *       讓 GameBoard::gameOver 回傳 GameOver::lose ，如果開到地雷
      */
     bool leftClick(unsigned row, unsigned col);
     /**
-     * @brief 右鍵點擊(row, col)，在flag, quetion, closed輪替
+     * @brief 右鍵點擊(row, col)，在 Mask::flag, Mask::quetion, Mask::closed輪替
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟, out of range
-     * @post ++flagcount if closed -> flag;
-     *       --flagcount if flag -> question
+     * @post ++flagcount if Mask::closed -> Mask::flag;
+     *       --flagcount if Mask::flag -> Mask::question
      */
     bool rightClick(unsigned row, unsigned col);
     /**
      * @brief Check if game is over
-     * @return GameOver::playing -> not over or not loaded;
+     * @return GameOver::nope -> not over or not loaded;
      *         GameOver::win -> win;
      *         GameOver::lose -> lose
      */

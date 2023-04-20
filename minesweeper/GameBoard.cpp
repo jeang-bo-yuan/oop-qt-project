@@ -142,6 +142,13 @@ bool GameBoard::load(unsigned row, unsigned col, float rate) {
     rows = row;
     cols = col;
 
+    // check rate
+    if (rate <= 0.f || rate >= 1.f){
+        this->unload();
+        cerr << "(rate not in interval (0, 1))";
+        return false;
+    }
+
     // allocate memory
     char* ansCopy = new char[totals];
     this->ans = ansCopy;
@@ -192,7 +199,7 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
     setMask(row, col, getAnswer(row, col));
 
     // update count
-    --remainBlankCount;
+    // --remainBlankCount; 只有在開啟不是地雷的格子時才減一
     ++openBlankCount;
 
     switch (getAnswer(row, col)) {
@@ -218,6 +225,9 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
         leftClick(row + 1, col + 1);
         leftClick(row, col + 1);
         leftClick(row - 1, col + 1);
+        [[fallthrough]];
+    default:
+        --remainBlankCount;
         break;
     }
 

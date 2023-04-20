@@ -7,7 +7,7 @@
 #include <QWidget>
 
 /**
- * @brief 採地雷遊戲的格子
+ * @brief 採地雷遊戲的格子（for GUI）
  * @details 右鍵和左鍵點擊時會發出不同訊號，而且顯示文字時會有文字美觀
  */
 class MineButton : public QPushButton

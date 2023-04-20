@@ -23,6 +23,13 @@
 #define DEFAULT_BOMB 20
 #define DEFAULT_RATE 0.1
 
+#define MAX_ROW 30
+#define MIN_ROW 2
+#define MAX_COL 30
+#define MIN_COL 2
+#define MAX_RATE 0.99
+#define MIN_RATE 0.01
+
 /**
  * @brief 開始GUI Game的初始化
  * @param argc
@@ -102,8 +109,8 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     {
         QWidget* stack2 = new QWidget;
         QHBoxLayout* sLayout2 = new QHBoxLayout(stack2);
-        loader2Row->setMinimum(1);
-        loader2Col->setMinimum(1);
+        loader2Row->setRange(MIN_ROW, MAX_ROW);
+        loader2Col->setRange(MIN_COL, MAX_COL);
         loader2Bomb->setMinimum(1);
 
         loader2Row->setValue(DEFAULT_ROW);
@@ -124,9 +131,9 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     {
         QWidget* stack3 = new QWidget;
         QHBoxLayout* sLayout3 = new QHBoxLayout(stack3);
-        loader3Row->setMinimum(1);
-        loader3Col->setMinimum(1);
-        loader3Rate->setRange(0, 1);
+        loader3Row->setRange(MIN_ROW, MAX_ROW);
+        loader3Col->setRange(MIN_COL, MAX_COL);
+        loader3Rate->setRange(MIN_RATE, MAX_RATE);
         loader3Rate->setSingleStep(0.05);
 
         loader3Row->setValue(DEFAULT_ROW);
