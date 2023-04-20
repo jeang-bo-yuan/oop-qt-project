@@ -2,6 +2,7 @@
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
 #include <stddef.h>
+#include <stdexcept>
 #include <string>
 
 /**
@@ -30,6 +31,16 @@ public: //member enumeration type
         nope = 0,  //!< game isn't over
         win = 1,  //!< player win the game
         lose = 2 //!< player lose the game
+    };
+
+public: // member exception type
+    /**
+     * @brief The exception class that will be thrown when GameBoard::load failed
+     */
+    class LoadFailed : public std::runtime_error {
+    public:
+        LoadFailed(const char* _what) : std::runtime_error(_what) {}
+        LoadFailed(const std::string& _what) : std::runtime_error(_what) {}
     };
 
 private:
@@ -93,21 +104,21 @@ public:
     bool isloaded() const {return loaded;}
     /**
      * \brief Load from file
-     * \return true -> Success; false -> Fail
+     * \post throw GameBoard::LoadFailed object when load failed
      */
-    bool load(const std::string& file);
+    void load(const std::string& file);
     /**
      * \brief Load with specific amount of mines
-     * \return true -> Success; false -> Fail
      * \pre 0 < bomb < GameBoard::rowSize() * GameBoard::colSize()
+     * \post throw GameBoard::LoadFailed object when load failed
      */
-    bool load(unsigned row, unsigned col, unsigned bomb);
+    void load(unsigned row, unsigned col, unsigned bomb);
     /**
-     * \brief Load with specific possibility to generate bomb
-     * \return true -> Success; false -> Fail
+     * \brief Load with specific possibility to generate bombs
      * \pre 0 < rate < 1
+     * \post throw GameBoard::LoadFailed object when load failed
      */
-    bool load(unsigned row, unsigned col, float rate);
+    void load(unsigned row, unsigned col, float rate);
     /**
      * \brief unload the board
      * \post free up merory of ans and mask, and let GameBoard::isloaded return false
@@ -156,7 +167,7 @@ public:
      */
     bool leftClick(unsigned row, unsigned col);
     /**
-     * @brief 右鍵點擊(row, col)，在 Mask::flag, Mask::quetion, Mask::closed輪替
+     * @brief 右鍵點擊(row, col)，在 Mask::flag, Mask::quetion, Mask::closed 輪替
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟, out of range
      * @post ++flagcount if Mask::closed -> Mask::flag;

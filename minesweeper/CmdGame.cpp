@@ -55,19 +55,36 @@ void standby(GameBoard& board) {
 
         // Load Boardfile
         if (regex_match(input, matchResults, iregex("Load +Boardfile +([^ ]+)"))){
-            status = board.load(matchResults[1]);
+            try {
+                board.load(matchResults[1]);
+                status = true;
+            }
+            catch (GameBoard::LoadFailed& ex) {
+                cerr << ex.what() << endl;
+                status = false;
+            }
         }
         // Load RandomCount <R> <C> <bombs>
         else if (regex_match(input, matchResults, iregex("Load +RandomCount +([0-9]+) +([0-9]+) +([0-9]+)"))) {
-            status = board.load((unsigned)stoul(matchResults[1]),
-                                (unsigned)stoul(matchResults[2]),
-                                (unsigned)stoul(matchResults[3]));
+            try {
+                board.load((unsigned)stoul(matchResults[1]), (unsigned)stoul(matchResults[2]), (unsigned)stoul(matchResults[3]));
+                status = true;
+            }
+            catch (GameBoard::LoadFailed& ex) {
+                cerr << ex.what() << endl;
+                status = false;
+            }
         }
         // Load RandomRate <R> <C> <rate>
         else if (regex_match(input, matchResults, iregex("Load +RandomRate +([0-9]+) +([0-9]+) +([0-9.]+)"))) {
-            status = board.load((unsigned)stoul(matchResults[1]),
-                                (unsigned)stoul(matchResults[2]),
-                                stof(matchResults[3]));
+            try {
+                board.load((unsigned)stoul(matchResults[1]), (unsigned)stoul(matchResults[2]), stof(matchResults[3]));
+                status = true;
+            }
+            catch (GameBoard::LoadFailed& ex) {
+                cerr << ex.what() << endl;
+                status = false;
+            }
         }
         // Print ...
         else if (regex_match(input, matchResults, iregex("Print +([^ ]+)"))) {

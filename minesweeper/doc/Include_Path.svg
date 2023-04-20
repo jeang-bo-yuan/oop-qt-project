@@ -5,153 +5,153 @@
  -->
 <!-- Title: source tree Pages: 1 -->
 <svg width="576pt" height="720pt"
- viewBox="0.00 0.00 576.00 719.85" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(0.26 0.26) rotate(0) translate(4 2789.69)">
+ viewBox="0.00 0.00 576.00 719.67" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.3 0.3) rotate(0) translate(4 2414.43)">
 <title>source tree</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-2789.69 2231.42,-2789.69 2231.42,4 -4,4"/>
-<!-- GeneralGameWidget.h -->
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-2414.43 1931.64,-2414.43 1931.64,4 -4,4"/>
+<!-- GUIGame.cpp -->
 <g id="node1" class="node">
-<title>GeneralGameWidget.h</title>
-<ellipse fill="none" stroke="black" cx="551.94" cy="-1009" rx="243.9" ry="30.31"/>
-<text text-anchor="middle" x="551.94" y="-1000.9" font-family="Helvetica,sans-Serif" font-size="32.00">GeneralGameWidget.h</text>
-</g>
-<!-- GameBoard.h -->
-<g id="node2" class="node">
-<title>GameBoard.h</title>
-<ellipse fill="none" stroke="black" cx="1496.94" cy="-241" rx="153.38" ry="30.31"/>
-<text text-anchor="middle" x="1496.94" y="-232.9" font-family="Helvetica,sans-Serif" font-size="32.00">GameBoard.h</text>
-</g>
-<!-- GeneralGameWidget.h&#45;&gt;GameBoard.h -->
-<g id="edge1" class="edge">
-<title>GeneralGameWidget.h&#45;&gt;GameBoard.h</title>
-<path fill="none" stroke="black" d="M587.83,-978.91C735.05,-859.57 1292.47,-407.74 1453.27,-277.4"/>
-<polygon fill="black" stroke="black" points="1455.95,-279.73 1461.51,-270.71 1451.54,-274.29 1455.95,-279.73"/>
-</g>
-<!-- GUIGame.h -->
-<g id="node3" class="node">
-<title>GUIGame.h</title>
-<ellipse fill="none" stroke="black" cx="132.94" cy="-1777" rx="132.87" ry="30.31"/>
-<text text-anchor="middle" x="132.94" y="-1768.9" font-family="Helvetica,sans-Serif" font-size="32.00">GUIGame.h</text>
-</g>
-<!-- GUIGame.h&#45;&gt;GeneralGameWidget.h -->
-<g id="edge2" class="edge">
-<title>GUIGame.h&#45;&gt;GeneralGameWidget.h</title>
-<path fill="none" stroke="black" d="M149.1,-1746.44C214.24,-1627.36 457.43,-1182.77 530.83,-1048.59"/>
-<polygon fill="black" stroke="black" points="534.09,-1049.92 535.82,-1039.47 527.95,-1046.56 534.09,-1049.92"/>
-</g>
-<!-- common.cpp -->
-<g id="node4" class="node">
-<title>common.cpp</title>
-<ellipse fill="none" stroke="black" cx="979.94" cy="-1777" rx="142.26" ry="30.31"/>
-<text text-anchor="middle" x="979.94" y="-1768.9" font-family="Helvetica,sans-Serif" font-size="32.00">common.cpp</text>
+<title>GUIGame.cpp</title>
+<ellipse fill="none" stroke="black" cx="847.94" cy="-2202" rx="156.96" ry="30.31"/>
+<text text-anchor="middle" x="847.94" y="-2193.9" font-family="Helvetica,sans-Serif" font-size="32.00">GUIGame.cpp</text>
 </g>
 <!-- common.h -->
-<g id="node5" class="node">
+<g id="node2" class="node">
 <title>common.h</title>
-<ellipse fill="none" stroke="black" cx="1149.94" cy="-1009" rx="118.17" ry="30.31"/>
-<text text-anchor="middle" x="1149.94" y="-1000.9" font-family="Helvetica,sans-Serif" font-size="32.00">common.h</text>
+<ellipse fill="none" stroke="black" cx="974.94" cy="-873" rx="118.17" ry="30.31"/>
+<text text-anchor="middle" x="974.94" y="-864.9" font-family="Helvetica,sans-Serif" font-size="32.00">common.h</text>
 </g>
-<!-- common.cpp&#45;&gt;common.h -->
-<g id="edge3" class="edge">
-<title>common.cpp&#45;&gt;common.h</title>
-<path fill="none" stroke="black" d="M986.5,-1746.44C1012.87,-1627.6 1111.2,-1184.55 1141.19,-1049.4"/>
-<polygon fill="black" stroke="black" points="1144.65,-1049.99 1143.4,-1039.47 1137.81,-1048.47 1144.65,-1049.99"/>
+<!-- GUIGame.cpp&#45;&gt;common.h -->
+<g id="edge1" class="edge">
+<title>GUIGame.cpp&#45;&gt;common.h</title>
+<path fill="none" stroke="black" d="M847.25,-2171.46C845.35,-2075.39 841.66,-1763.14 866.94,-1506.59 889.25,-1280.1 944.72,-1012.29 966.22,-913.31"/>
+<polygon fill="black" stroke="black" points="969.66,-913.96 968.38,-903.44 962.82,-912.46 969.66,-913.96"/>
+</g>
+<!-- MineButton.h -->
+<g id="node8" class="node">
+<title>MineButton.h</title>
+<ellipse fill="none" stroke="black" cx="1670.94" cy="-1537" rx="145.83" ry="30.31"/>
+<text text-anchor="middle" x="1670.94" y="-1528.9" font-family="Helvetica,sans-Serif" font-size="32.00">MineButton.h</text>
+</g>
+<!-- GUIGame.cpp&#45;&gt;MineButton.h -->
+<g id="edge6" class="edge">
+<title>GUIGame.cpp&#45;&gt;MineButton.h</title>
+<path fill="none" stroke="black" d="M883.56,-2172.3C1016.34,-2065.33 1482.21,-1690.04 1627.39,-1573.08"/>
+<polygon fill="black" stroke="black" points="1629.69,-1575.72 1635.28,-1566.72 1625.3,-1570.27 1629.69,-1575.72"/>
+</g>
+<!-- GUIGame.h -->
+<g id="node9" class="node">
+<title>GUIGame.h</title>
+<ellipse fill="none" stroke="black" cx="132.94" cy="-1537" rx="132.87" ry="30.31"/>
+<text text-anchor="middle" x="132.94" y="-1528.9" font-family="Helvetica,sans-Serif" font-size="32.00">GUIGame.h</text>
+</g>
+<!-- GUIGame.cpp&#45;&gt;GUIGame.h -->
+<g id="edge7" class="edge">
+<title>GUIGame.cpp&#45;&gt;GUIGame.h</title>
+<path fill="none" stroke="black" d="M816.75,-2172.09C701.31,-2065.04 298.34,-1691.37 171.48,-1573.74"/>
+<polygon fill="black" stroke="black" points="173.59,-1570.93 163.88,-1566.69 168.83,-1576.06 173.59,-1570.93"/>
+</g>
+<!-- GameBoard.h -->
+<g id="node6" class="node">
+<title>GameBoard.h</title>
+<ellipse fill="none" stroke="black" cx="1131.94" cy="-209" rx="153.38" ry="30.31"/>
+<text text-anchor="middle" x="1131.94" y="-200.9" font-family="Helvetica,sans-Serif" font-size="32.00">GameBoard.h</text>
 </g>
 <!-- common.h&#45;&gt;GameBoard.h -->
-<g id="edge4" class="edge">
+<g id="edge11" class="edge">
 <title>common.h&#45;&gt;GameBoard.h</title>
-<path fill="none" stroke="black" d="M1163.33,-978.44C1217.27,-859.36 1418.67,-414.77 1479.46,-280.59"/>
-<polygon fill="black" stroke="black" points="1482.65,-282.02 1483.59,-271.47 1476.27,-279.14 1482.65,-282.02"/>
+<path fill="none" stroke="black" d="M981.99,-842.27C1007.32,-735.44 1093.77,-370.92 1122.54,-249.62"/>
+<polygon fill="black" stroke="black" points="1126,-250.19 1124.9,-239.65 1119.19,-248.57 1126,-250.19"/>
+</g>
+<!-- common.cpp -->
+<g id="node3" class="node">
+<title>common.cpp</title>
+<ellipse fill="none" stroke="black" cx="1017.94" cy="-1537" rx="142.26" ry="30.31"/>
+<text text-anchor="middle" x="1017.94" y="-1528.9" font-family="Helvetica,sans-Serif" font-size="32.00">common.cpp</text>
+</g>
+<!-- common.cpp&#45;&gt;common.h -->
+<g id="edge2" class="edge">
+<title>common.cpp&#45;&gt;common.h</title>
+<path fill="none" stroke="black" d="M1016,-1506.27C1009.07,-1399.55 985.44,-1035.66 977.53,-913.99"/>
+<polygon fill="black" stroke="black" points="981,-913.4 976.86,-903.65 974.02,-913.85 981,-913.4"/>
 </g>
 <!-- GeneralGameWidget.cpp -->
-<g id="node6" class="node">
+<g id="node4" class="node">
 <title>GeneralGameWidget.cpp</title>
-<ellipse fill="none" stroke="black" cx="551.94" cy="-1777" rx="267.99" ry="30.31"/>
-<text text-anchor="middle" x="551.94" y="-1768.9" font-family="Helvetica,sans-Serif" font-size="32.00">GeneralGameWidget.cpp</text>
+<ellipse fill="none" stroke="black" cx="551.94" cy="-1537" rx="267.99" ry="30.31"/>
+<text text-anchor="middle" x="551.94" y="-1528.9" font-family="Helvetica,sans-Serif" font-size="32.00">GeneralGameWidget.cpp</text>
+</g>
+<!-- GeneralGameWidget.cpp&#45;&gt;common.h -->
+<g id="edge3" class="edge">
+<title>GeneralGameWidget.cpp&#45;&gt;common.h</title>
+<path fill="none" stroke="black" d="M570.93,-1506.27C639.55,-1398.89 874.52,-1031.15 950.81,-911.76"/>
+<polygon fill="black" stroke="black" points="953.8,-913.58 956.23,-903.27 947.9,-909.82 953.8,-913.58"/>
+</g>
+<!-- GeneralGameWidget.h -->
+<g id="node7" class="node">
+<title>GeneralGameWidget.h</title>
+<ellipse fill="none" stroke="black" cx="551.94" cy="-873" rx="243.9" ry="30.31"/>
+<text text-anchor="middle" x="551.94" y="-864.9" font-family="Helvetica,sans-Serif" font-size="32.00">GeneralGameWidget.h</text>
 </g>
 <!-- GeneralGameWidget.cpp&#45;&gt;GeneralGameWidget.h -->
 <g id="edge5" class="edge">
 <title>GeneralGameWidget.cpp&#45;&gt;GeneralGameWidget.h</title>
-<path fill="none" stroke="black" d="M551.94,-1746.44C551.94,-1627.72 551.94,-1185.44 551.94,-1049.8"/>
-<polygon fill="black" stroke="black" points="555.44,-1049.47 551.94,-1039.47 548.44,-1049.47 555.44,-1049.47"/>
-</g>
-<!-- GeneralGameWidget.cpp&#45;&gt;common.h -->
-<g id="edge12" class="edge">
-<title>GeneralGameWidget.cpp&#45;&gt;common.h</title>
-<path fill="none" stroke="black" d="M575.01,-1746.44C668.27,-1626.99 1017.23,-1179.99 1120.79,-1047.34"/>
-<polygon fill="black" stroke="black" points="1123.85,-1049.1 1127.25,-1039.06 1118.34,-1044.79 1123.85,-1049.1"/>
+<path fill="none" stroke="black" d="M551.94,-1506.27C551.94,-1399.55 551.94,-1035.66 551.94,-913.99"/>
+<polygon fill="black" stroke="black" points="555.44,-913.65 551.94,-903.65 548.44,-913.65 555.44,-913.65"/>
 </g>
 <!-- GameBoard.cpp -->
-<g id="node7" class="node">
+<g id="node5" class="node">
 <title>GameBoard.cpp</title>
-<ellipse fill="none" stroke="black" cx="2049.94" cy="-1009" rx="177.47" ry="30.31"/>
-<text text-anchor="middle" x="2049.94" y="-1000.9" font-family="Helvetica,sans-Serif" font-size="32.00">GameBoard.cpp</text>
+<ellipse fill="none" stroke="black" cx="1288.94" cy="-873" rx="177.47" ry="30.31"/>
+<text text-anchor="middle" x="1288.94" y="-864.9" font-family="Helvetica,sans-Serif" font-size="32.00">GameBoard.cpp</text>
 </g>
 <!-- GameBoard.cpp&#45;&gt;GameBoard.h -->
-<g id="edge6" class="edge">
+<g id="edge4" class="edge">
 <title>GameBoard.cpp&#45;&gt;GameBoard.h</title>
-<path fill="none" stroke="black" d="M2028.6,-978.44C1942.46,-859.12 1620.38,-412.99 1524.21,-279.79"/>
-<polygon fill="black" stroke="black" points="1526.9,-277.53 1518.21,-271.47 1521.23,-281.63 1526.9,-277.53"/>
+<path fill="none" stroke="black" d="M1281.89,-842.27C1256.55,-735.44 1170.1,-370.92 1141.33,-249.62"/>
+<polygon fill="black" stroke="black" points="1144.68,-248.57 1138.97,-239.65 1137.87,-250.19 1144.68,-248.57"/>
 </g>
-<!-- GUIGame.cpp -->
-<g id="node8" class="node">
-<title>GUIGame.cpp</title>
-<ellipse fill="none" stroke="black" cx="1149.94" cy="-2545" rx="156.96" ry="30.31"/>
-<text text-anchor="middle" x="1149.94" y="-2536.9" font-family="Helvetica,sans-Serif" font-size="32.00">GUIGame.cpp</text>
+<!-- GeneralGameWidget.h&#45;&gt;GameBoard.h -->
+<g id="edge13" class="edge">
+<title>GeneralGameWidget.h&#45;&gt;GameBoard.h</title>
+<path fill="none" stroke="black" d="M577.61,-842.7C671.37,-735.68 995.26,-366 1099.41,-247.13"/>
+<polygon fill="black" stroke="black" points="1102.28,-249.16 1106.23,-239.34 1097.01,-244.55 1102.28,-249.16"/>
 </g>
-<!-- GUIGame.cpp&#45;&gt;GUIGame.h -->
-<g id="edge10" class="edge">
-<title>GUIGame.cpp&#45;&gt;GUIGame.h</title>
-<path fill="none" stroke="black" d="M1111.92,-2515.37C954.04,-2396.45 350.29,-1941.71 178.68,-1812.45"/>
-<polygon fill="black" stroke="black" points="180.69,-1809.59 170.6,-1806.37 176.48,-1815.18 180.69,-1809.59"/>
-</g>
-<!-- GUIGame.cpp&#45;&gt;common.h -->
-<g id="edge8" class="edge">
-<title>GUIGame.cpp&#45;&gt;common.h</title>
-<path fill="none" stroke="black" d="M1149.94,-2514.39C1149.94,-2323.55 1149.94,-1268.12 1149.94,-1049.61"/>
-<polygon fill="black" stroke="black" points="1153.44,-1049.55 1149.94,-1039.55 1146.44,-1049.55 1153.44,-1049.55"/>
-</g>
-<!-- MineButton.h -->
-<g id="node9" class="node">
-<title>MineButton.h</title>
-<ellipse fill="none" stroke="black" cx="1323.94" cy="-1777" rx="145.83" ry="30.31"/>
-<text text-anchor="middle" x="1323.94" y="-1768.9" font-family="Helvetica,sans-Serif" font-size="32.00">MineButton.h</text>
-</g>
-<!-- GUIGame.cpp&#45;&gt;MineButton.h -->
-<g id="edge7" class="edge">
-<title>GUIGame.cpp&#45;&gt;MineButton.h</title>
-<path fill="none" stroke="black" d="M1156.65,-2514.44C1183.65,-2395.6 1284.29,-1952.55 1314.99,-1817.4"/>
-<polygon fill="black" stroke="black" points="1318.44,-1818 1317.24,-1807.47 1311.61,-1816.45 1318.44,-1818"/>
+<!-- GUIGame.h&#45;&gt;GeneralGameWidget.h -->
+<g id="edge9" class="edge">
+<title>GUIGame.h&#45;&gt;GeneralGameWidget.h</title>
+<path fill="none" stroke="black" d="M151.48,-1506.7C219.08,-1399.9 452.27,-1031.47 527.98,-911.84"/>
+<polygon fill="black" stroke="black" points="530.98,-913.66 533.37,-903.34 525.06,-909.91 530.98,-913.66"/>
 </g>
 <!-- MineButton.cpp -->
 <g id="node10" class="node">
 <title>MineButton.cpp</title>
-<ellipse fill="none" stroke="black" cx="1669.94" cy="-2545" rx="169.91" ry="30.31"/>
-<text text-anchor="middle" x="1669.94" y="-2536.9" font-family="Helvetica,sans-Serif" font-size="32.00">MineButton.cpp</text>
+<ellipse fill="none" stroke="black" cx="1757.94" cy="-2202" rx="169.91" ry="30.31"/>
+<text text-anchor="middle" x="1757.94" y="-2193.9" font-family="Helvetica,sans-Serif" font-size="32.00">MineButton.cpp</text>
 </g>
 <!-- MineButton.cpp&#45;&gt;GameBoard.h -->
-<g id="edge9" class="edge">
+<g id="edge10" class="edge">
 <title>MineButton.cpp&#45;&gt;GameBoard.h</title>
-<path fill="none" stroke="black" d="M1678.5,-2514.54C1706.74,-2415.72 1796.7,-2086.59 1825.94,-1807.41 1890.67,-1189.36 1590.86,-455.73 1514.35,-280.8"/>
-<polygon fill="black" stroke="black" points="1517.48,-279.23 1510.25,-271.48 1511.07,-282.05 1517.48,-279.23"/>
+<path fill="none" stroke="black" d="M1767.87,-2171.38C1798.9,-2074.4 1888.34,-1758.19 1825.94,-1506.59 1690.65,-961.19 1275.03,-395.24 1161.09,-247.19"/>
+<polygon fill="black" stroke="black" points="1163.83,-245.02 1154.95,-239.24 1158.29,-249.3 1163.83,-245.02"/>
 </g>
 <!-- MineButton.cpp&#45;&gt;MineButton.h -->
-<g id="edge11" class="edge">
+<g id="edge8" class="edge">
 <title>MineButton.cpp&#45;&gt;MineButton.h</title>
-<path fill="none" stroke="black" d="M1656.58,-2514.44C1602.8,-2395.36 1401.98,-1950.77 1341.37,-1816.59"/>
-<polygon fill="black" stroke="black" points="1344.55,-1815.14 1337.25,-1807.47 1338.17,-1818.02 1344.55,-1815.14"/>
+<path fill="none" stroke="black" d="M1754.03,-2171.22C1739.99,-2064.23 1692.08,-1699.17 1676.14,-1577.68"/>
+<polygon fill="black" stroke="black" points="1679.6,-1577.15 1674.83,-1567.69 1672.66,-1578.06 1679.6,-1577.15"/>
 </g>
 <!-- CmdGame.cpp -->
 <g id="node11" class="node">
 <title>CmdGame.cpp</title>
-<ellipse fill="none" stroke="black" cx="1651.94" cy="-1777" rx="164.51" ry="30.31"/>
-<text text-anchor="middle" x="1651.94" y="-1768.9" font-family="Helvetica,sans-Serif" font-size="32.00">CmdGame.cpp</text>
+<ellipse fill="none" stroke="black" cx="1342.94" cy="-1537" rx="164.51" ry="30.31"/>
+<text text-anchor="middle" x="1342.94" y="-1528.9" font-family="Helvetica,sans-Serif" font-size="32.00">CmdGame.cpp</text>
 </g>
 <!-- CmdGame.cpp&#45;&gt;common.h -->
-<g id="edge13" class="edge">
+<g id="edge12" class="edge">
 <title>CmdGame.cpp&#45;&gt;common.h</title>
-<path fill="none" stroke="black" d="M1632.56,-1746.44C1554.36,-1627.11 1261.92,-1180.88 1174.67,-1047.73"/>
-<polygon fill="black" stroke="black" points="1177.39,-1045.51 1168.98,-1039.06 1171.53,-1049.34 1177.39,-1045.51"/>
+<path fill="none" stroke="black" d="M1326.65,-1506.7C1267.34,-1400.01 1062.88,-1032.21 996.17,-912.2"/>
+<polygon fill="black" stroke="black" points="999.16,-910.38 991.24,-903.34 993.04,-913.78 999.16,-910.38"/>
 </g>
 </g>
 </svg>

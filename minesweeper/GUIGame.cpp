@@ -188,35 +188,37 @@ void StandbyWidget::loadBoard() {
     int loaderIdx = this->findChild<QComboBox*>("LOADER_LIST")->currentIndex();
     QString arg1, arg2, arg3;
     QString cmd;
-    bool status = true;
 
-    switch (loaderIdx) {
-    case 0: // use loader1
-        arg1 = loader1File->text();
-        cmd = QString("Load Boardfile ") + arg1;
-        status = board_p->load(qPrintable(arg1));
-        break;
+    try {
+        switch (loaderIdx) {
+        case 0: // use loader1
+            arg1 = loader1File->text();
+            cmd = QString("Load Boardfile ") + arg1;
+            board_p->load(qPrintable(arg1));
+            break;
 
-    case 1: // use loader2
-        arg1 = loader2Row->text();
-        arg2 = loader2Col->text();
-        arg3 = loader2Bomb->text();
-        cmd = QString("Load RandomCount ") + arg1 + " " + arg2 + " " + arg3;
-        status = board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toUInt());
-        break;
+        case 1: // use loader2
+            arg1 = loader2Row->text();
+            arg2 = loader2Col->text();
+            arg3 = loader2Bomb->text();
+            cmd = QString("Load RandomCount ") + arg1 + " " + arg2 + " " + arg3;
+            board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toUInt());
+            break;
 
-    case 2:
-        arg1 = loader3Row->text();
-        arg2 = loader3Col->text();
-        arg3 = loader3Rate->text();
-        cmd = QString("Load RandomRate ") + arg1 + " " + arg2 + " " + arg3;
-        status = board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat());
-        break;
+        case 2:
+            arg1 = loader3Row->text();
+            arg2 = loader3Col->text();
+            arg3 = loader3Rate->text();
+            cmd = QString("Load RandomRate ") + arg1 + " " + arg2 + " " + arg3;
+            board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat());
+            break;
+        }
+
+        printCommandSuccessOrNot(qPrintable(cmd), true);
     }
-
-    printCommandSuccessOrNot(qPrintable(cmd), status);
-    if (!status)
-        QMessageBox::warning(this, "Loading Failed", "Can't Load Game Board");
+    catch (GameBoard::LoadFailed& ex) {
+        QMessageBox::warning(this, "Loading Failed", QString("Can't Load Game Board!!\n") + ex.what());
+    }
 }
 
 void StandbyWidget::replay() {
