@@ -69,13 +69,12 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
 
     // loader list
     QComboBox* loaderList = new QComboBox;
+    loaderList->setObjectName("LOADER_LIST");
     loaderList->addItems({"Load From BoardFile", "Customize Size & Bombs", "Random Rate"});
 
     // load button
     QPushButton* loadBut = new QPushButton("Load");
-    QObject::connect(loadBut, &QPushButton::clicked,
-                     this, [this, loaderList] {emit loadButClicked(loaderList->currentIndex());});
-    QObject::connect(this, &StandbyWidget::loadButClicked, this, &StandbyWidget::loadBoard);
+    QObject::connect(loadBut, &QPushButton::clicked, this, &StandbyWidget::loadBoard);
 
     //
     listAndBut->addWidget(new QLabel("Loading Mode : "), 1);
@@ -159,6 +158,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     }
 
     vLayout->addWidget(settingStack);
+    vLayout->addStretch(1);
 
 // startgame button
     {
@@ -184,7 +184,8 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     }
 }
 
-void StandbyWidget::loadBoard(int loaderIdx) {
+void StandbyWidget::loadBoard() {
+    int loaderIdx = this->findChild<QComboBox*>("LOADER_LIST")->currentIndex();
     QString arg1, arg2, arg3;
     QString cmd;
     bool status = true;

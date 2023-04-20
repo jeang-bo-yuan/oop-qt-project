@@ -48,19 +48,13 @@ public:
 public slots:
     /**
      * @brief 載入Minesweeper的盤面
-     * @param loaderIdx - 欲使用的loader的index
      */
-    void loadBoard(int loaderIdx);
+    void loadBoard();
     /**
      * @brief 重新開始遊戲
      */
     void replay();
 signals:
-    /**
-     * @brief 當load按鈕被按下時發出
-     * @param loaderIdx - 選定的loader的index
-     */
-    void loadButClicked(int loaderIdx);
     /**
      * @brief 當開始遊戲時發出
      */

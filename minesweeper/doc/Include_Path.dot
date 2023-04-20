@@ -7,16 +7,16 @@ digraph "source tree" {
 	node [fontsize="32", fontname="Helvetica"]
 	clusterrank="local";
 	"GeneralGameWidget.h" -> "GameBoard.h"
-	"CmdGame.cpp" -> "common.h"
-	"GUIGame.cpp" -> "common.h"
-	"GUIGame.cpp" -> "MineButton.h"
-	"common.h" -> "GameBoard.h"
-	"MineButton.cpp" -> "MineButton.h"
 	"GUIGame.h" -> "GeneralGameWidget.h"
 	"common.cpp" -> "common.h"
-	"GameBoard.cpp" -> "GameBoard.h"
+	"common.h" -> "GameBoard.h"
 	"GeneralGameWidget.cpp" -> "GeneralGameWidget.h"
-	"GeneralGameWidget.cpp" -> "common.h"
+	"GameBoard.cpp" -> "GameBoard.h"
+	"GUIGame.cpp" -> "MineButton.h"
+	"GUIGame.cpp" -> "common.h"
 	"MineButton.cpp" -> "GameBoard.h"
 	"GUIGame.cpp" -> "GUIGame.h"
+	"MineButton.cpp" -> "MineButton.h"
+	"GeneralGameWidget.cpp" -> "common.h"
+	"CmdGame.cpp" -> "common.h"
 }
