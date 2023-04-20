@@ -6,17 +6,17 @@ digraph "source tree" {
     fontname="Helvetica";
 	node [fontsize="32", fontname="Helvetica"]
 	clusterrank="local";
-	"GUIGame.cpp" -> "common.h"
-	"common.cpp" -> "common.h"
-	"GeneralGameWidget.cpp" -> "common.h"
-	"GameBoard.cpp" -> "GameBoard.h"
-	"GeneralGameWidget.cpp" -> "GeneralGameWidget.h"
-	"GUIGame.cpp" -> "MineButton.h"
-	"GUIGame.cpp" -> "GUIGame.h"
-	"MineButton.cpp" -> "MineButton.h"
-	"GUIGame.h" -> "GeneralGameWidget.h"
 	"MineButton.cpp" -> "GameBoard.h"
-	"common.h" -> "GameBoard.h"
+	"GeneralGameWidget.cpp" -> "GeneralGameWidget.h"
 	"CmdGame.cpp" -> "common.h"
+	"MineButton.cpp" -> "MineButton.h"
+	"GUIGame.cpp" -> "MineButton.h"
+	"common.cpp" -> "common.h"
+	"GUIGame.cpp" -> "GUIGame.h"
+	"GeneralGameWidget.cpp" -> "common.h"
+	"GUIGame.cpp" -> "common.h"
+	"GameBoard.cpp" -> "GameBoard.h"
+	"GUIGame.h" -> "GeneralGameWidget.h"
 	"GeneralGameWidget.h" -> "GameBoard.h"
+	"common.h" -> "GameBoard.h"
 }
