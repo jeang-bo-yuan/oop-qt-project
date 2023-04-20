@@ -72,6 +72,9 @@ private:
 private: // private member function
     void forceSetAns(unsigned row, unsigned col, char c) { ((char*)ans)[row * cols + col] = c;}
     void setMask(unsigned row, unsigned col, char c) { mask[row * cols + col] = c; }
+    //! 為 GameBoard::ans 和 GameBoard::mask 分配記憶體，並初始化 GameBoard::mask
+    void basicLoad();
+    //! 在 GameBoard::ans 上畫上數字，並記算地雷和空格數
     void putNumberOnAns_CountBombAndBlank();
 
 public:

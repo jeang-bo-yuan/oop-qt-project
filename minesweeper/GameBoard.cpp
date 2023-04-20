@@ -11,6 +11,19 @@
 
 using namespace std;
 
+void GameBoard::basicLoad() {
+    // allocate memory
+    unsigned totals = rows * cols;
+    this->ans = new char[totals];
+    this->mask = new char[totals];
+
+    if (ans == NULL || mask == NULL)
+        throw GameBoard::LoadFailed("(Not Enough Memory)");
+
+    // init mask
+    memset(mask, (char)Mask::closed, totals);
+}
+
 void GameBoard::putNumberOnAns_CountBombAndBlank() {
     bombCount = 0;
     remainBlankCount = 0;
@@ -52,25 +65,21 @@ void GameBoard::load(const string& file) {
         if (fin.fail())
             throw GameBoard::LoadFailed("(Row or Column Format Error)");
 
-        // allocate memory
-        unsigned totals = rows * cols;
-        char* ansCopy = new char[totals];
-        ans = ansCopy; // point to same place
-        mask = new char[totals];
-        if (ans == NULL || mask == NULL)
-            throw GameBoard::LoadFailed("(Not Enough Memory)");
+        this->basicLoad();
 
-        // init mask
-        memset(mask, (char)Mask::closed, totals);
-
-        // init ansCopy by reading (totals) chars
-        for (unsigned idx = 0; fin.good() && idx < totals; ++idx)
-            fin >> ansCopy[idx];
+        // init ans by reading chars
+        char input;
+        for (unsigned row = 0; row < this->rows; ++row) {
+            for (unsigned col = 0; col < this->cols; ++col) {
+                fin >> input;
+                this->forceSetAns(row, col, input);
+            }
+        }
 
         if (fin.fail())
             throw GameBoard::LoadFailed("(Too few slots)");
 
-        // init ansCopy by setting number and count bomb
+        // init ans by setting number and count bomb
         this->putNumberOnAns_CountBombAndBlank();
 
         loaded = true;
@@ -94,26 +103,19 @@ void GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
         if (bomb == 0)
             throw GameBoard::LoadFailed("(Too Few Bombs)");
 
-        // allocate memory
-        char* ansCopy = new char[totals];
-        this->ans = ansCopy;
-        this->mask = new char[totals];
-        if (ansCopy == NULL || mask == NULL)
-            throw GameBoard::LoadFailed("(Not Enough Memory)");
-
-        // init mask
-        memset(mask, (char)Mask::closed, totals);
+        this->basicLoad();
 
         // init ans
-        memset(ansCopy, (char)Ans::mine, bomb);
-        memset(ansCopy + bomb, 'O', totals - bomb);
+        char* ansRaw = (char*)ans;
+        memset(ansRaw       , (char)Ans::mine, bomb);
+        memset(ansRaw + bomb, 'O'            , totals - bomb);
         srand((unsigned)time(NULL));
         for (unsigned idx = 0; idx < totals; ++idx) { // shuffle
             unsigned idx2 = rand() % totals;
-            swap(ansCopy[idx], ansCopy[idx2]);
+            swap(ansRaw[idx], ansRaw[idx2]);
         }
 
-        // init ansCopy by setting number and count bomb
+        // init ans by setting number and count bomb
         this->putNumberOnAns_CountBombAndBlank();
 
         loaded = true;
@@ -135,21 +137,14 @@ void GameBoard::load(unsigned row, unsigned col, float rate) {
         if (rate <= 0.f || rate >= 1.f)
             throw GameBoard::LoadFailed("(Rate should be between 0 and 1 not inclusively)");
 
-        // allocate memory
-        char* ansCopy = new char[totals];
-        this->ans = ansCopy;
-        this->mask = new char[totals];
-        if (ansCopy == NULL || mask == NULL)
-            throw GameBoard::LoadFailed("(Not Enough Memory)");
+        this->basicLoad();
 
-        // init mask
-        memset(mask, (char)Mask::closed, totals);
-
+        char* ansRaw = (char*)ans;
         // init ans
         srand((unsigned)time(NULL));
         for (unsigned idx = 0; idx < totals; ++idx) {
             float randomFloat = (float)rand() / (float)RAND_MAX;
-            ansCopy[idx] = (randomFloat < rate ? 'X' : 'O');
+            ansRaw[idx] = (randomFloat < rate ? 'X' : 'O');
         }
 
         // init ansCopy by setting number and count bomb
