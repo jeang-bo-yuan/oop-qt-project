@@ -7,12 +7,12 @@
 #include <QMouseEvent>
 #include "GameBoard.h"
 
-#define BORDER "border: 1px solid grey;"
+#define BORDER "border: 1px solid black;"
 
 MineButton::MineButton(int r, int c, int w, QWidget* parent)
     : QPushButton(parent), r(r), c(c)
 {
-    this->setStyleSheet(BORDER "background-color: white");
+    this->setStyleSheet(BORDER "background-color: grey");
     this->setFixedSize(w, w);
 }
 
@@ -30,7 +30,7 @@ void MineButton::setText(char txt) {
 
     switch (txt) {
     case (char)GameBoard::Mask::closed:
-        setStyleSheet(BORDER "background-color: white");
+        setStyleSheet(BORDER "background-color: grey");
         break;
     case (char)GameBoard::Mask::flag:
         setStyleSheet(BORDER "background-color: blue");
@@ -45,9 +45,9 @@ void MineButton::setText(char txt) {
         QString styleSheet(BORDER "background-color: white;" "font-family: impact;");
 
         if (txt == '0')
-            styleSheet += "color: limegreen;";
+            styleSheet += "color: white;";
         else if (txt == '1')
-            styleSheet += "color: green;";
+            styleSheet += "color: limegreen;";
         else if (txt == '2')
             styleSheet += "color: darkorange;";
         else

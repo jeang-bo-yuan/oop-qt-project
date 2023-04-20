@@ -13,6 +13,7 @@
 #include <QFont>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 #include "common.h"
 #include "GUIGame.h"
@@ -300,11 +301,22 @@ void PlayingWidget::openBlock(int r, int c) {
         return;
 
     updateInfoBox();
-    // draw
-    for (size_t r = 0; r < board_p->rowSize(); ++r) {
-        for (size_t c = 0; c < board_p->colSize(); ++c) {
+    // draw blocks
+    for (unsigned r = 0; r < board_p->rowSize(); ++r) {
+        for (unsigned c = 0; c < board_p->colSize(); ++c) {
+            char maskTxt = board_p->getMask(r, c);
+
+            // 左鍵點擊不會讓某格轉空格，所以跳過
+            if (maskTxt == (char)GameBoard::Mask::closed)
+                continue;
+
             MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition((int)r, (int)c)->widget());
-            button->setText(board_p->getMask((int)r, (int)c));
+
+            // 如果已經開起來了（是數字），不要更新
+            if (isdigit(qPrintable(button->text())[0]))
+                continue;
+
+            button->setText(maskTxt);
         }
     }
 
