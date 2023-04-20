@@ -18,7 +18,8 @@ class GameBoard
 public: //member enumeration type
     //! icon on answer board
     enum class Ans : char {
-        mine = 'X' //!< icon of mine
+        mine = 'X', //!< icon of mine
+        random = '?' //!< 出現此符號，代表該格會在第一次 GameBoard::leftClick 後隨機生成
     };
     //! icon on mask board
     enum class Mask : char {
@@ -74,6 +75,12 @@ private: // private member function
     void setMask(unsigned row, unsigned col, char c) { mask[row * cols + col] = c; }
     //! 為 GameBoard::ans 和 GameBoard::mask 分配記憶體，並初始化 GameBoard::mask
     void basicLoad();
+    /**
+     * \brief 若選擇 Load RandomCount 或 Load RandomRate，則在第一次 GameBoard::leftClick 時會呼叫此函數隨機生成版面
+     * \param clickR - leftClick 的列
+     * \param clickC - leftClick 的欄
+     */
+    void loadRandomly(unsigned clickR, unsigned clickC);
     //! 在 GameBoard::ans 上畫上數字，並記算地雷和空格數
     void putNumberOnAns_CountBombAndBlank();
 

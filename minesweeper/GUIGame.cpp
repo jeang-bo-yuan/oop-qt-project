@@ -22,9 +22,9 @@
 #define DEFAULT_ROW 10
 #define DEFAULT_COL 10
 #define DEFAULT_BOMB 20
-#define DEFAULT_RATE 0.1
+#define DEFAULT_RATE 0.2
 
-#define MAX_ROW 30
+#define MAX_ROW 25
 #define MIN_ROW 2
 #define MAX_COL 30
 #define MIN_COL 2

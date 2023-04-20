@@ -24,6 +24,47 @@ void GameBoard::basicLoad() {
     memset(mask, (char)Mask::closed, totals);
 }
 
+//! \pre GameBoard::ans 中只有 GameBoard::Ans::random
+void GameBoard::loadRandomly(unsigned clickR, unsigned clickC) {
+    if (remainBlankCount > 9) {
+        // 讓 (clickR, clickC) 附近不要有地雷
+        for (int dR = -1; dR <= 1; ++dR) {
+            for (int dC = -1; dC <= 1; ++dC) {
+                if (this->onBoard(clickR + dR, clickC + dC)) {
+                    this->forceSetAns(clickR + dR, clickC + dC, 'O');
+                    --remainBlankCount;
+                }
+            }
+        }
+    }
+
+    // 隨機放置地雷與空格
+    // 使用「發牌」的原理
+    srand((unsigned)time(NULL));
+    for (unsigned row = 0; row < rows; ++row) {
+        for (unsigned col = 0; col < cols; ++col) {
+            if (getAnswer(row, col) == 'O')
+                continue;
+
+            unsigned randNum = rand() % (bombCount + remainBlankCount);
+            if (randNum < bombCount) {
+                forceSetAns(row, col, (char)Ans::mine);
+                --bombCount;
+            }
+            else {
+                forceSetAns(row, col, 'O');
+                --remainBlankCount;
+            }
+
+            if (bombCount + remainBlankCount == 0)
+                goto END;
+        }
+    }
+
+    END:
+    putNumberOnAns_CountBombAndBlank();
+}
+
 void GameBoard::putNumberOnAns_CountBombAndBlank() {
     bombCount = 0;
     remainBlankCount = 0;
@@ -105,18 +146,11 @@ void GameBoard::load(unsigned row, unsigned col, unsigned bomb) {
 
         this->basicLoad();
 
-        // init ans
-        char* ansRaw = (char*)ans;
-        memset(ansRaw       , (char)Ans::mine, bomb);
-        memset(ansRaw + bomb, 'O'            , totals - bomb);
-        srand((unsigned)time(NULL));
-        for (unsigned idx = 0; idx < totals; ++idx) { // shuffle
-            unsigned idx2 = rand() % totals;
-            swap(ansRaw[idx], ansRaw[idx2]);
-        }
+        // put random icon
+        memset((char*)ans, (char)Ans::random, totals);
 
-        // init ans by setting number and count bomb
-        this->putNumberOnAns_CountBombAndBlank();
+        this->bombCount = bomb;
+        this->remainBlankCount = totals - this->bombCount;
 
         loaded = true;
     }
@@ -139,16 +173,19 @@ void GameBoard::load(unsigned row, unsigned col, float rate) {
 
         this->basicLoad();
 
-        char* ansRaw = (char*)ans;
-        // init ans
+        // set random icon
+        memset((char*)ans, (char)Ans::random, totals);
+
+        // generate random bombCount
         srand((unsigned)time(NULL));
-        for (unsigned idx = 0; idx < totals; ++idx) {
-            float randomFloat = (float)rand() / (float)RAND_MAX;
-            ansRaw[idx] = (randomFloat < rate ? 'X' : 'O');
+        for (unsigned i = 0; i < totals; ++i) {
+            float randFloat = (float)rand() / (float)RAND_MAX;
+            if (randFloat < rate)
+                ++bombCount;
         }
 
-        // init ansCopy by setting number and count bomb
-        this->putNumberOnAns_CountBombAndBlank();
+        if (bombCount == totals) --bombCount;
+        remainBlankCount = totals - bombCount;
 
         loaded = true;
     }
@@ -177,14 +214,21 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
         )
         return false;
 
+    char ansOfBlock = getAnswer(row, col);
+
+    if (ansOfBlock == (char)Ans::random) {
+        this->loadRandomly(row, col);
+        ansOfBlock = getAnswer(row, col); // update
+    }
+
     // open and set it as answer
-    setMask(row, col, getAnswer(row, col));
+    setMask(row, col, ansOfBlock);
 
     // update count
     // --remainBlankCount; 只有在開啟不是地雷的格子時才減一
     ++openBlankCount;
 
-    switch (getAnswer(row, col)) {
+    switch (ansOfBlock) {
     case (char)Ans::mine:
         // 開到地雷
         // print all mine on mask
