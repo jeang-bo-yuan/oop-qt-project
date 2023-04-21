@@ -50,9 +50,10 @@ private:
     unsigned cols;
     /**
      * @brief Game Answer
-     * @details load 後不變
+     * @details load from file 或 loadRandomly 後不變
      * - 非地雷 : 則顯示周圍9宮格內的炸彈數量(0~8)
      * - 地雷 : X
+     * - 隨機 : ? （第一次leftClick後才會確定）
      */
     const char* ans;
     /**
@@ -66,8 +67,8 @@ private:
     char* mask;
 
     unsigned bombCount;  //!< 實際炸彈數，載入後不變
-    unsigned flagCount;  //!< mask上的flag數，受GambBoard::rightClick()影響
-    unsigned openBlankCount; //!< 已開啟的格子數
+    unsigned flagCount;  //!< mask上的flag數，受 GambBoard::rightClick() 影響
+    unsigned openBlankCount; //!< 已開啟的格子數（不含開啟炸彈）
     unsigned remainBlankCount; //!< 未開啟且不是炸彈的格子數
     bool loseGame;
 private: // private member function
@@ -172,7 +173,7 @@ public:
      * @brief 左鍵點擊(row, col)，開啟格子，遇0擴散
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟or已插flag, out of range
-     * @post ++openBlankCount，如果成功開啟格子；--remainBlankCount，如果不是開到地雷；
+     * @post ++openBlankCount，--remainBlankCount，如果不是開到地雷；
      *       讓 GameBoard::gameOver 回傳 GameOver::lose ，如果開到地雷
      */
     bool leftClick(unsigned row, unsigned col);

@@ -224,10 +224,6 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
     // open and set it as answer
     setMask(row, col, ansOfBlock);
 
-    // update count
-    // --remainBlankCount; 只有在開啟不是地雷的格子時才減一
-    ++openBlankCount;
-
     switch (ansOfBlock) {
     case (char)Ans::mine:
         // 開到地雷
@@ -253,6 +249,8 @@ bool GameBoard::leftClick(unsigned row, unsigned col) {
         leftClick(row - 1, col + 1);
         [[fallthrough]];
     default:
+        // update count
+        ++openBlankCount;
         --remainBlankCount;
         break;
     }
