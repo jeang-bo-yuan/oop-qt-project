@@ -43,12 +43,12 @@ int startGUIGame(int argc, char* argv[]) {
     QApplication::setFont(defaultFont);
 
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
-    StandbyWidget* standby = new StandbyWidget(board_p);
-    PlayingWidget* playing = new PlayingWidget(board_p);
+    QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p));
+    QScopedPointer<PlayingWidget> playing(new PlayingWidget(board_p));
 
     standby->show();
-    QObject::connect(standby, &StandbyWidget::startGame, playing, &PlayingWidget::initGameBoard);
-    QObject::connect(playing, &PlayingWidget::replay, standby, &StandbyWidget::replay);
+    QObject::connect(standby.get(), &StandbyWidget::startGame, playing.get(), &PlayingWidget::initGameBoard);
+    QObject::connect(playing.get(), &PlayingWidget::replay, standby.get(), &StandbyWidget::replay);
 
     return app.exec();
 }
@@ -360,7 +360,7 @@ void PlayingWidget::checkIfGameOver() {
         return;
     }
 
-    QMessageBox* msg = new QMessageBox(QMessageBox::NoIcon, title, text, QMessageBox::NoButton, this);
+    QScopedPointer<QMessageBox> msg(new QMessageBox(QMessageBox::NoIcon, title, text, QMessageBox::NoButton, this));
     QPushButton* replayBut = msg->addButton("Replay", QMessageBox::NoRole);
     msg->addButton("Quit", QMessageBox::NoRole);
 
@@ -376,10 +376,12 @@ void PlayingWidget::checkIfGameOver() {
             }
         }
 
+        QLayoutItem* stretchToDelete = vLayout->itemAt(vLayout->count() - 1);
         vLayout->removeItem(guiBoard);
-        vLayout->removeItem(vLayout->itemAt(vLayout->count() - 1)); // 刪掉最下面的stretch（在initGameBoard被加入）
+        vLayout->removeItem(stretchToDelete); // 刪掉最下面的stretch（在initGameBoard被加入）
         delete guiBoard;
         guiBoard = nullptr;
+        delete stretchToDelete;
 
         std::cout << "<Replay> : Success" << std::endl;
         emit replay();
