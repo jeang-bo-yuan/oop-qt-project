@@ -35,7 +35,7 @@ void MineButton::setText(char txt) {
     case (char)GameBoard::Mask::flag:
         setStyleSheet(BORDER "background-color: blue");
         break;
-    case (char)GameBoard::Mask::quetion:
+    case (char)GameBoard::Mask::question:
         setStyleSheet(BORDER "background-color: pink");
         break;
     case (char)GameBoard::Ans::mine:

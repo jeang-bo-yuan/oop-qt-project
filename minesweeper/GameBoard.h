@@ -25,7 +25,7 @@ public: //member enumeration type
     enum class Mask : char {
         closed = '#', //!< icon of default slot
         flag = 'f',  //!< icon of flag
-        quetion = '?'  //!< icon of question mark
+        question = '?'  //!< icon of question mark
     };
     //! state of the game board
     enum class GameOver  {
@@ -177,7 +177,7 @@ public:
      */
     bool leftClick(unsigned row, unsigned col);
     /**
-     * @brief 右鍵點擊(row, col)，在 Mask::flag, Mask::quetion, Mask::closed 輪替
+     * @brief 右鍵點擊(row, col)，在 Mask::flag, Mask::question, Mask::closed 輪替
      * @return true -> Success; false -> Failed
      * @details Fail: 已被開啟, out of range
      * @post ++flagcount if Mask::closed -> Mask::flag;

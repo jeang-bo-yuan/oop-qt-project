@@ -209,7 +209,7 @@ void GameBoard::unload() {
 bool GameBoard::leftClick(unsigned row, unsigned col) {
     if (!onBoard(row, col) // not on board
         || ( // (row, col) is open or flagged
-            getMask(row, col) != (char)Mask::closed && (getMask(row, col) != (char)Mask::quetion)
+            getMask(row, col) != (char)Mask::closed && (getMask(row, col) != (char)Mask::question)
             )
         )
         return false;
@@ -264,7 +264,7 @@ bool GameBoard::rightClick(unsigned row, unsigned col) {
     if (!onBoard(row, col)  // not on board
         || ( // (row, col) is open
             getMask(row, col) != (char)Mask::closed && getMask(row, col) != (char)Mask::flag
-            && getMask(row, col) != (char)Mask::quetion
+            && getMask(row, col) != (char)Mask::question
             )
         )
         return false;
@@ -275,10 +275,10 @@ bool GameBoard::rightClick(unsigned row, unsigned col) {
         ++flagCount;
         break;
     case (char)Mask::flag:
-        setMask(row, col, (char)Mask::quetion);
+        setMask(row, col, (char)Mask::question);
         --flagCount;
         break;
-    case (char)Mask::quetion:
+    case (char)Mask::question:
         setMask(row, col, (char)Mask::closed);
         break;
     }
