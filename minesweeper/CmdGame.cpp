@@ -94,7 +94,7 @@ void standby(GameBoard& board) {
         // StartGame
         else if (iequal(input, "StartGame")) {
             if (board.isloaded()) {
-                cout << "Success\n";
+                printCommandSuccessOrNot(input, true);
                 return;
             }
         }
@@ -159,12 +159,12 @@ int ending(GameBoard& board) {
 
         // Replay
         if (iequal(input, "Replay")) {
-            cout << "Success\n";
+            printCommandSuccessOrNot(input, true);
             return 1;
         }
         // Quit
         else if (iequal(input, "Quit")) {
-            cout << "Success\n";
+            printCommandSuccessOrNot(input, true);
             return 0;
         }
         // Print
