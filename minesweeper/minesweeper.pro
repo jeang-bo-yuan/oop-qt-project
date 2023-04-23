@@ -29,3 +29,16 @@ HEADERS += \
     GeneralGameWidget.h \
     MineButton.h \
     common.h
+
+
+
+## copy files into exe directory
+win32 {
+    copydata.commands = $(COPY_DIR) \"$$PWD/boards\" \"$$OUT_PWD/boards\"
+} else {
+    copydata.commands = $(COPY_DIR) $$PWD/boards $$OUT_PWD
+}
+#copydata.target = copydata
+
+QMAKE_EXTRA_TARGETS += copydata
+PRE_TARGETDEPS  += copydata
