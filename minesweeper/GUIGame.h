@@ -13,8 +13,8 @@
  * From top to down
  * - infoBox
  * - three print button (only when QT_DEBUG is defined)
- * - loader list + load button
- * - loader setting (QStackedWidget + QHBoxLayout)
+ * - loader list
+ * - loader setting (QStackedWidget)
  * - StartGame button
  */
 class StandbyWidget : public GeneralGameWidget{
@@ -47,9 +47,9 @@ public:
 
 public slots:
     /**
-     * @brief 載入Minesweeper的盤面
+     * @brief 載入Minesweeper的盤面，若載入成功則開始遊戲
      */
-    void loadBoard();
+    void loadBoard_and_StartGame();
     /**
      * @brief 重新開始遊戲
      */

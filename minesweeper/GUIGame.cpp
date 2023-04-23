@@ -70,16 +70,10 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     // loader list
     QComboBox* loaderList = new QComboBox;
     loaderList->setObjectName("LOADER_LIST");
-    loaderList->addItems({"Load From BoardFile", "Customize Size & Bombs", "Random Rate"});
+    loaderList->addItems({"Load From BoardFile", "Customize Size & Bombs", "Customize Size & Bomb Generating Rate"});
 
-    // load button
-    QPushButton* loadBut = new QPushButton("Load");
-    QObject::connect(loadBut, &QPushButton::clicked, this, &StandbyWidget::loadBoard);
-
-    //
     listAndBut->addWidget(new QLabel("Loading Mode : "), 1);
     listAndBut->addWidget(loaderList, 4);
-    listAndBut->addWidget(loadBut, 1);
     vLayout->addLayout(listAndBut);
 
 // loader setting
@@ -166,18 +160,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
 // startgame button
     {
         QPushButton* startBut = new QPushButton("Start Game");
-        QObject::connect(startBut, &QPushButton::clicked, this, [this]() {
-            std::cout << "<StartGame> : ";
-            if (this->board_p->isloaded()){
-                std::cout << "Success" << std::endl;
-                this->hide();
-                emit this->startGame();
-            }
-            else {
-                QMessageBox::warning(this, "Can't start the game", "You haven't loaded the game board!");
-                std::cout << "Failed" << std::endl;
-            }
-        });
+        QObject::connect(startBut, &QPushButton::clicked, this, &StandbyWidget::loadBoard_and_StartGame);
 
         QHBoxLayout* startBox = new QHBoxLayout;
         startBox->addStretch(1);
@@ -187,7 +170,7 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
     }
 }
 
-void StandbyWidget::loadBoard() {
+void StandbyWidget::loadBoard_and_StartGame() {
     int loaderIdx = this->findChild<QComboBox*>("LOADER_LIST")->currentIndex();
     QString arg1, arg2, arg3;
     QString cmd;
@@ -208,7 +191,7 @@ void StandbyWidget::loadBoard() {
             board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toUInt());
             break;
 
-        case 2:
+        case 2: // use loader3
             arg1 = loader3Row->text();
             arg2 = loader3Col->text();
             arg3 = loader3Rate->text();
@@ -216,8 +199,11 @@ void StandbyWidget::loadBoard() {
             board_p->load(arg1.toUInt(), arg2.toUInt(), arg3.toFloat());
             break;
         }
-
         printCommandSuccessOrNot(qPrintable(cmd), true);
+
+        printCommandSuccessOrNot("StartGame", true);
+        this->hide();
+        emit this->startGame();
     }
     catch (GameBoard::LoadFailed& ex) {
         QMessageBox::warning(this, "Loading Failed", QString("Can't Load Game Board!!\n") + ex.what());
