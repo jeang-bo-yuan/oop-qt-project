@@ -91,12 +91,15 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         QWidget* stack1 = new QWidget;
         QHBoxLayout* sLayout1 = new QHBoxLayout(stack1);
 
-        loader1File->setText("./boards/board1.txt");
+        loader1File->setText("boards/board1.txt");
+        QDir defaultFilePath(QDir::current());
         QPushButton* fileBut = new QPushButton("browse...");
-        QFileDialog* fileDialog = new QFileDialog(this, "Board File", ".", "*.txt");
+        QFileDialog* fileDialog = new QFileDialog(this, "Board File", defaultFilePath.absolutePath() + "/boards", "*.txt");
 
-        QObject::connect(fileBut, &QPushButton::clicked, fileDialog, [fileDialog]() {fileDialog->exec();});
-        QObject::connect(fileDialog, &QFileDialog::fileSelected, loader1File, &QLineEdit::setText);
+        QObject::connect(fileBut, &QPushButton::clicked, fileDialog, &QFileDialog::exec);
+        QObject::connect(fileDialog, &QFileDialog::fileSelected, loader1File, [this, defaultFilePath] (QString file) {
+            loader1File->setText(defaultFilePath.relativeFilePath(file));
+        });
 
         sLayout1->addWidget(new QLabel("Board File: "), 1);
         sLayout1->addWidget(loader1File, 3);
