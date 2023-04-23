@@ -18,6 +18,7 @@
  * @param board - minesweeper GameBoard
  * @param state - current game state
  * @post print "<Print *info*> : Failed" of "<Print *info*> : *information*"
+ * @attention `Print GameAnswer` is only avalaible when QT_DEBUG is defined
  */
 void printCommand(const std::string& info, const GameBoard& board, const char* state);
 

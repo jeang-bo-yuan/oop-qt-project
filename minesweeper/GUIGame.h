@@ -12,9 +12,9 @@
  * @details
  * From top to down
  * - infoBox
- * - three print button
+ * - three print button (only when QT_DEBUG is defined)
  * - loader list + load button
- * - loader setting (QStackedWidget + QGridLayout)
+ * - loader setting (QStackedWidget + QHBoxLayout)
  * - StartGame button
  */
 class StandbyWidget : public GeneralGameWidget{
@@ -66,7 +66,7 @@ signals:
  * @details
  * From top to down
  * - infoBox
- * - three print button
+ * - three print button (only when QT_DEBUG is defined)
  * - the guiGameBoard
  */
 class PlayingWidget : public GeneralGameWidget {

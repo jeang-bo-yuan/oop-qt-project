@@ -27,6 +27,7 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
             cout << flush;
             return;
         }
+#ifdef QT_DEBUG
         else if (iequal(info, "GameAnswer")) {
             cout.put('\n');
             for (unsigned row = 0; row < board.rowSize(); ++row) {
@@ -38,6 +39,7 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
             cout << flush;
             return;
         }
+#endif
         else if (iequal(info, "BombCount")) {
             cout << board.getBombCount() << endl;
             return;

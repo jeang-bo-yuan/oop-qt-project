@@ -7,7 +7,10 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include "GeneralGameWidget.h"
+
+#ifdef QT_DEBUG
 #include "common.h"
+#endif
 
 
 GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString& s,QWidget* parent)
@@ -19,6 +22,7 @@ GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString
     infoBox->addWidget(new QLabel(this->state), 0, 1);
     vLayout->addLayout(infoBox);
 
+#ifdef QT_DEBUG
 // for print
     QHBoxLayout* printBox = new QHBoxLayout;
     // print gameboard
@@ -38,5 +42,6 @@ GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString
     printBox->addWidget(forAnswer);
     printBox->addWidget(forState);
     vLayout->addLayout(printBox);
+#endif
 }
 

@@ -13,7 +13,7 @@
  * @details
  * From top to down
  * - infoBox
- * - three print buttons
+ * - three print buttons (only when QT_DEBUG is defined)
  */
 class GeneralGameWidget : public QWidget {
 protected:

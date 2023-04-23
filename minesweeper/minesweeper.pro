@@ -30,7 +30,9 @@ HEADERS += \
     MineButton.h \
     common.h
 
-
+CONFIG(debug, debug|release) {
+    DEFINES += QT_DEBUG
+}
 
 ## copy files into exe directory
 win32 {
