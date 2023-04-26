@@ -73,8 +73,17 @@ class PlayingWidget : public GeneralGameWidget {
     Q_OBJECT
 
     //! 包含按鈕
-    QGridLayout* guiBoard;
+    QGridLayout* const guiBoard;
 
+    /**
+     * @brief check if game is over
+     * @post 若遊戲結束，顯示對話框詢問是否要重新開始(Replay)。
+     * - Yes ->
+     *  1. 將 PlayingWidget::guiBoard上原本的按鈕清掉
+     *  2. emit replay();
+     * - No ->
+     *  結束程式
+     */
     void checkIfGameOver();
 
 public:

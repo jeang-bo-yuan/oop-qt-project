@@ -11,7 +11,6 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QFont>
-#include <iostream>
 #include <string>
 #include <cstring>
 
@@ -218,10 +217,8 @@ void StandbyWidget::replay() {
 // PlayingWidget的實作 //////////////////////////////////////////////////////////////////////////////////////////////
 
 PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
-    : GeneralGameWidget(p, "Playing", parent), guiBoard(nullptr)
+    : GeneralGameWidget(p, "Playing", parent), guiBoard(new QGridLayout)
 {
-    vLayout->addStretch(1);
-
 // infobox
     {
         infoBox->addWidget(new QLabel("Bomb Count : "), 1, 0);
@@ -245,14 +242,17 @@ PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         infoBox->addWidget(remainBlank, 2, 3);
     }
 
+// GUI Minesweeper Board
+    vLayout->addStretch(1);
+    vLayout->addLayout(guiBoard);
+    vLayout->addStretch(1);
 }
 
 void PlayingWidget::initGameBoard() {
     updateInfoBox();
 
-    guiBoard = new QGridLayout;
-    for (size_t r = 0; r < board_p->rowSize(); ++r) {
-        for (size_t c = 0; c < board_p->colSize(); ++c) {
+    for (unsigned r = 0; r < board_p->rowSize(); ++r) {
+        for (unsigned c = 0; c < board_p->colSize(); ++c) {
             MineButton* button = new MineButton((int)r, (int)c);
             QObject::connect(button, &MineButton::leftClicked, this, &PlayingWidget::openBlock);
             QObject::connect(button, &MineButton::rightClicked, this, &PlayingWidget::flagBlock);
@@ -263,9 +263,6 @@ void PlayingWidget::initGameBoard() {
     guiBoard->setSpacing(0);
     guiBoard->setContentsMargins(0, 0, 0, 0);
     guiBoard->setAlignment(Qt::AlignCenter);
-
-    vLayout->addLayout(guiBoard);
-    vLayout->addStretch(1);
 
     this->show();
 }
@@ -361,22 +358,16 @@ void PlayingWidget::checkIfGameOver() {
         for (int r = 0; r < (int)board_p->rowSize(); ++r) {
             for (int c = 0; c < (int)board_p->colSize(); ++c) {
                 MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition(r, c)->widget());
+                guiBoard->removeWidget(button);
                 delete button;
             }
         }
 
-        QLayoutItem* stretchToDelete = vLayout->itemAt(vLayout->count() - 1);
-        vLayout->removeItem(guiBoard);
-        vLayout->removeItem(stretchToDelete); // 刪掉最下面的stretch（在initGameBoard被加入）
-        delete guiBoard;
-        guiBoard = nullptr;
-        delete stretchToDelete;
-
-        std::cout << "<Replay> : Success" << std::endl;
+        printCommandSuccessOrNot("Replay", true);
         emit replay();
     }
     else {
-        std::cout << "<Quit> : Success" << std::endl;
+        printCommandSuccessOrNot("Quit", true);
         qApp->closeAllWindows();
     }
 }
