@@ -26,11 +26,11 @@ void MineButton::mouseReleaseEvent(QMouseEvent* event) {
 }
 
 void MineButton::setText(char txt) {
-    QPushButton::setText(QString(txt == (char)GameBoard::Mask::closed ? '\0' : txt));
+    QPushButton::setText(QString(txt));
 
     switch (txt) {
     case (char)GameBoard::Mask::closed:
-        setStyleSheet(BORDER "background-color: grey");
+        setStyleSheet(BORDER "color: grey;" "background-color: grey");
         break;
     case (char)GameBoard::Mask::flag:
         setStyleSheet(BORDER "background-color: blue");

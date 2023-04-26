@@ -23,13 +23,12 @@ int startCmdGame() {
     GameBoard board;
 
     while(1) {
-        board.unload();
-
         standby(board);
         playing(board);
         int need_restart = ending(board);
+
         if (need_restart)
-            continue;
+            board.unload();
         else
             break;
     }
