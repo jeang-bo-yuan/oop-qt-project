@@ -12,7 +12,7 @@ SOURCES += \
         GameBoard.cpp \
         GeneralGameWidget.cpp \
         MineButton.cpp \
-        common.cpp \
+        command.cpp \
         main.cpp
 
 CONFIG += lrelease
@@ -28,7 +28,7 @@ HEADERS += \
     GameBoard.h \
     GeneralGameWidget.h \
     MineButton.h \
-    common.h
+    command.h
 
 CONFIG(debug, debug|release) {
     DEFINES += QT_DEBUG

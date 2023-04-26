@@ -15,7 +15,7 @@
 #include <string>
 #include <cstring>
 
-#include "common.h"
+#include "command.h"
 #include "GUIGame.h"
 #include "MineButton.h"
 

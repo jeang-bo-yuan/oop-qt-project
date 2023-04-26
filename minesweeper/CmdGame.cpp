@@ -2,7 +2,7 @@
  * @file CmdGame.cpp
  * @brief 負責Command Line Game的流程
  ***************************/
-#include "common.h"
+#include "command.h"
 #include <iostream>
 #include <stdlib.h>
 #include <string>

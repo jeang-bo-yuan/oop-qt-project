@@ -1,8 +1,8 @@
 /******************************************//**
- * \file common.cpp
- * \brief implement functions in common.h
+ * \file command.cpp
+ * \brief implement functions in command.h
 **********************************************/
-#include "common.h"
+#include "command.h"
 #include <iostream>
 
 using namespace std;

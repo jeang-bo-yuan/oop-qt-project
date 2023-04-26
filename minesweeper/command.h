@@ -1,9 +1,9 @@
 /*************************//**
- * @file common.h
- * @brief 包含常用函式、巨集
+ * @file command.h
+ * @brief 用來處理command用的函式&巨集
 *****************************/
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef COMMAND_H
+#define COMMAND_H
 #include "GameBoard.h"
 #include <regex>
 
@@ -30,4 +30,4 @@ void printCommand(const std::string& info, const GameBoard& board, const char* s
  */
 void printCommandSuccessOrNot(const std::string& cmd, bool status);
 
-#endif // COMMON_H
+#endif // COMMAND_H

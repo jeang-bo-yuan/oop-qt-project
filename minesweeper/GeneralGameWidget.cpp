@@ -9,7 +9,7 @@
 #include "GeneralGameWidget.h"
 
 #ifdef QT_DEBUG
-#include "common.h"
+#include "command.h"
 #endif
 
 
