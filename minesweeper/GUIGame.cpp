@@ -38,12 +38,15 @@
  */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
+    QDir::setCurrent(QCoreApplication::applicationDirPath());    // 將工作目錄設成可執行檔所在目錄
     QFont defaultFont("nomospace", 10);
     QApplication::setFont(defaultFont);
 
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
-    QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p));
-    QScopedPointer<PlayingWidget> playing(new PlayingWidget(board_p));
+    std::shared_ptr<QT_ResourcePack> resource_p = std::make_shared<QT_ResourcePack>(QDir::currentPath() + "/resource");
+
+    QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p, resource_p));
+    QScopedPointer<PlayingWidget> playing(new PlayingWidget(board_p, resource_p));
 
     standby->show();
     QObject::connect(standby.get(), &StandbyWidget::startGame, playing.get(), &PlayingWidget::initGameBoard);
@@ -54,8 +57,8 @@ int startGUIGame(int argc, char* argv[]) {
 
 // StandbyWidget的實作 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
-    : GeneralGameWidget(p, "Standby", parent),
+StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, std::shared_ptr<QT_ResourcePack> r, QWidget* parent)
+    : GeneralGameWidget(p, "Standby", r, parent),
     loader1File(new QLineEdit),
     loader2Row(new QSpinBox), loader2Col(new QSpinBox), loader2Bomb(new QSpinBox),
     loader3Row(new QSpinBox), loader3Col(new QSpinBox), loader3Rate(new QDoubleSpinBox)
@@ -84,10 +87,10 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
         QWidget* stack1 = new QWidget;
         QHBoxLayout* sLayout1 = new QHBoxLayout(stack1);
 
-        loader1File->setText("boards/board1.txt");
+        loader1File->setText("resource/boards/board1.txt");
         QDir defaultFilePath(QDir::current());
         QPushButton* fileBut = new QPushButton("browse...");
-        QFileDialog* fileDialog = new QFileDialog(this, "Board File", defaultFilePath.absolutePath() + "/boards", "*.txt");
+        QFileDialog* fileDialog = new QFileDialog(this, "Board File", defaultFilePath.absolutePath() + "/resource/boards", "*.txt");
 
         QObject::connect(fileBut, &QPushButton::clicked, fileDialog, &QFileDialog::exec);
         QObject::connect(fileDialog, &QFileDialog::fileSelected, loader1File, [this, defaultFilePath] (QString file) {
@@ -216,8 +219,8 @@ void StandbyWidget::replay() {
 
 // PlayingWidget的實作 //////////////////////////////////////////////////////////////////////////////////////////////
 
-PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent)
-    : GeneralGameWidget(p, "Playing", parent), guiBoard(new QGridLayout)
+PlayingWidget::PlayingWidget(std::shared_ptr<GameBoard> p, std::shared_ptr<QT_ResourcePack> r, QWidget* parent)
+    : GeneralGameWidget(p, "Playing", r, parent), guiBoard(new QGridLayout)
 {
 // infobox
     {
@@ -305,7 +308,7 @@ void PlayingWidget::openBlock(int r, int c) {
             if (isdigit(qPrintable(button->text())[0]))
                 continue;
 
-            button->setText(maskTxt);
+            button->setText(maskTxt, resource_p.get());
         }
     }
 
@@ -324,7 +327,7 @@ void PlayingWidget::flagBlock(int r, int c) {
     updateInfoBox();
     // draw
     MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition(r, c)->widget());
-    button->setText(board_p->getMask(r, c));
+    button->setText(board_p->getMask(r, c), resource_p.get());
 
     // check if game over
     checkIfGameOver();

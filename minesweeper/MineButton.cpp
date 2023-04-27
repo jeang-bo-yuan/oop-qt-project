@@ -25,22 +25,33 @@ void MineButton::mouseReleaseEvent(QMouseEvent* event) {
     }
 }
 
-void MineButton::setText(char txt) {
-    QPushButton::setText(QString(txt));
-
+void MineButton::setText(char txt, QT_ResourcePack* r) {
     switch (txt) {
+    // 未開啟
     case (char)GameBoard::Mask::closed:
-        setStyleSheet(BORDER "color: grey;" "background-color: grey");
+        QPushButton::setText("");
+        setStyleSheet(BORDER "background-color: grey");
+        setIcon(QIcon());
         break;
+    // 旗子
     case (char)GameBoard::Mask::flag:
+        QPushButton::setText("");
         setStyleSheet(BORDER "background-color: blue");
+        setIcon(r->getIcon("flag.png"));
         break;
+    // 問號
     case (char)GameBoard::Mask::question:
+        QPushButton::setText("");
         setStyleSheet(BORDER "background-color: pink");
+        setIcon(r->getIcon("question.png"));
         break;
+    // 地雷
     case (char)GameBoard::Ans::mine:
+        QPushButton::setText("");
         setStyleSheet(BORDER "background-color: red");
+        setIcon(r->getIcon("mine.png"));
         break;
+    // 數字
     default:
         QString styleSheet(BORDER "background-color: white;" "font-family: impact;");
 
@@ -53,8 +64,9 @@ void MineButton::setText(char txt) {
         else
             styleSheet += "color: red;";
 
-
+        QPushButton::setText(QString(txt));
         setStyleSheet(styleSheet);
+        setIcon(QIcon());
         break;
     }
 }

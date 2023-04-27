@@ -12,6 +12,7 @@ SOURCES += \
         GameBoard.cpp \
         GeneralGameWidget.cpp \
         MineButton.cpp \
+        QT_ResourcePack.cpp \
         command.cpp \
         main.cpp
 
@@ -28,6 +29,7 @@ HEADERS += \
     GameBoard.h \
     GeneralGameWidget.h \
     MineButton.h \
+    QT_ResourcePack.h \
     command.h
 
 CONFIG(debug, debug|release) {
@@ -36,9 +38,9 @@ CONFIG(debug, debug|release) {
 
 ## copy files into exe directory
 win32 {
-    copydata.commands = $(COPY_DIR) \"$$PWD/boards\" \"$$OUT_PWD/boards\"
+    copydata.commands = $(COPY_DIR) \"$$PWD/resource\" \"$$OUT_PWD/$(OBJECTS_DIR)/resource\"
 } else {
-    copydata.commands = $(COPY_DIR) $$PWD/boards $$OUT_PWD
+    copydata.commands = $(COPY_DIR) $$PWD/resource $$OUT_PWD/$(OBJECTS_DIR)
 }
 #copydata.target = copydata
 

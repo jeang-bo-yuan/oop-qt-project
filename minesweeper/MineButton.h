@@ -3,8 +3,8 @@
 #define MINEBUTTON_H
 
 #include <QPushButton>
-
 #include <QWidget>
+#include "QT_ResourcePack.h"
 
 /**
  * @brief 採地雷遊戲的格子（for GUI）
@@ -35,7 +35,7 @@ public:
 
 public slots:
     //! set text + 美觀
-    void setText(char txt);
+    void setText(char txt, QT_ResourcePack* r);
 
 signals:
     //! 左鍵點擊時發出

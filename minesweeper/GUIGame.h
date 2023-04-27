@@ -38,8 +38,9 @@ public:
      * @brief constructor
      * @param board_p - pointer to Minesweeper GameBoard
      * @param parent - parent QWidget
+     * @param resource_p - pointer to QT_ResourcePack
      */
-    StandbyWidget(std::shared_ptr<GameBoard> board_p, QWidget* parent = nullptr);
+    StandbyWidget(std::shared_ptr<GameBoard> board_p, std::shared_ptr<QT_ResourcePack> resource_p, QWidget* parent = nullptr);
     //! deleted copy ctor
     StandbyWidget(const StandbyWidget&) =delete;
     //! deleted assignment
@@ -91,8 +92,9 @@ public:
      * @brief constructor
      * @param p - pointer to minesweeper GameBoard
      * @param parent - parent QWidget
+     * @param r - pointer to QT_ResourcePack
      */
-    PlayingWidget(std::shared_ptr<GameBoard> p, QWidget* parent = nullptr);
+    PlayingWidget(std::shared_ptr<GameBoard> p, std::shared_ptr<QT_ResourcePack> r, QWidget* parent = nullptr);
     //! deleted copy constructor
     PlayingWidget(const PlayingWidget&) =delete;
     //! deleted assignment

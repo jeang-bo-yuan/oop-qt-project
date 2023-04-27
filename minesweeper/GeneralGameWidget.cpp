@@ -13,8 +13,8 @@
 #endif
 
 
-GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString& s,QWidget* parent)
-    : QWidget(parent), board_p(p), state(s), vLayout(new QVBoxLayout(this)), infoBox(new QGridLayout)
+GeneralGameWidget::GeneralGameWidget(std::shared_ptr<GameBoard> p, const QString& s, std::shared_ptr<QT_ResourcePack> r, QWidget* parent)
+    : QWidget(parent), board_p(p), state(s), resource_p(r), vLayout(new QVBoxLayout(this)), infoBox(new QGridLayout)
 {
 // information
     // game state
