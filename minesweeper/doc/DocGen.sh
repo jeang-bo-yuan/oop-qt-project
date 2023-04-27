@@ -4,7 +4,8 @@ case $1 in
 	"--dot")
 		# for Include_Path.svg
 		cinclude2dot --src=.. --quotetypes=quote > Include_Path.dot
-		dot Include_Path.dot -Tsvg -o Include_Path.svg  # dot is from graphviz
+		dot Include_Path.dot -Tsvg -o images/Include_Path.svg  # dot is from graphviz
+		rm Include_Path.dot
 		;;
 	"-h"|"--help")
 		echo "Usage:"

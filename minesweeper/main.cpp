@@ -1,10 +1,12 @@
 /*************************************//**
  * @mainpage Minesweeper
- *
+ * 這是踩地雷的文件，程式的進入點在 main.cpp
+ * @image html Include_Path.svg "Include關係圖" height=800
 *****************************************/
 /*************************************//**
  * @file main.cpp
  * @brief 程式的進入點
+ * @image html main_process.svg "主要流程"
 *****************************************/
 #define _CRT_SECURE_NO_WARNINGS
 
