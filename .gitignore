@@ -6,3 +6,4 @@
 
 # Doxygen documents
 */doc/html
+*.chw
