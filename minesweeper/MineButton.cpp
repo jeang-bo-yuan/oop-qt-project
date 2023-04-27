@@ -9,8 +9,8 @@
 
 #define BORDER "border: 1px solid black;"
 
-MineButton::MineButton(int r, int c, int w, QWidget* parent)
-    : QPushButton(parent), r(r), c(c)
+MineButton::MineButton(int r, int c, std::shared_ptr<QT_ResourcePack> r_p, int w, QWidget* parent)
+    : QPushButton(parent), r(r), c(c), resource_p(r_p)
 {
     this->setStyleSheet(BORDER "background-color: grey");
     this->setFixedSize(w, w);
@@ -25,7 +25,7 @@ void MineButton::mouseReleaseEvent(QMouseEvent* event) {
     }
 }
 
-void MineButton::setText(char txt, QT_ResourcePack* r) {
+void MineButton::setText(char txt) {
     switch (txt) {
     // 未開啟
     case (char)GameBoard::Mask::closed:
@@ -37,19 +37,19 @@ void MineButton::setText(char txt, QT_ResourcePack* r) {
     case (char)GameBoard::Mask::flag:
         QPushButton::setText("");
         setStyleSheet(BORDER "background-color: blue");
-        setIcon(r->getIcon("flag.png"));
+        setIcon(resource_p->getIcon("flag.png"));
         break;
     // 問號
     case (char)GameBoard::Mask::question:
         QPushButton::setText("");
         setStyleSheet(BORDER "background-color: pink");
-        setIcon(r->getIcon("question.png"));
+        setIcon(resource_p->getIcon("question.png"));
         break;
     // 地雷
     case (char)GameBoard::Ans::mine:
         QPushButton::setText("");
         setStyleSheet(BORDER "background-color: red");
-        setIcon(r->getIcon("mine.png"));
+        setIcon(resource_p->getIcon("mine.png"));
         break;
     // 數字
     default:

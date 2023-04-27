@@ -4,6 +4,7 @@
 
 #include <QPushButton>
 #include <QWidget>
+#include <memory>
 #include "QT_ResourcePack.h"
 
 /**
@@ -16,16 +17,18 @@ class MineButton : public QPushButton
 
     const int r;
     const int c;
+    const std::shared_ptr<QT_ResourcePack> resource_p;
 
 public:
     /**
      * @brief Constructor
      * @param r - 所在的row
      * @param c - 所在的col
+     * @param r_p - pointer to QT_ResourcePack
      * @param w - 按鍵的寬度
      * @param parent - parent QWidget
      */
-    MineButton(int r, int c, int w = 30, QWidget* parent = nullptr);
+    MineButton(int r, int c, std::shared_ptr<QT_ResourcePack> r_p, int w = 30, QWidget* parent = nullptr);
 
     /**
      * @brief mouseReleaseEvent
@@ -33,9 +36,11 @@ public:
      */
     void mouseReleaseEvent(QMouseEvent* event);
 
-public slots:
-    //! set text + 美觀
-    void setText(char txt, QT_ResourcePack* r);
+    /**
+     * @brief setText + 美觀
+     * @param txt - 文字
+     */
+    void setText(char txt);
 
 signals:
     //! 左鍵點擊時發出

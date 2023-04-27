@@ -256,7 +256,7 @@ void PlayingWidget::initGameBoard() {
 
     for (unsigned r = 0; r < board_p->rowSize(); ++r) {
         for (unsigned c = 0; c < board_p->colSize(); ++c) {
-            MineButton* button = new MineButton((int)r, (int)c);
+            MineButton* button = new MineButton((int)r, (int)c, resource_p);
             QObject::connect(button, &MineButton::leftClicked, this, &PlayingWidget::openBlock);
             QObject::connect(button, &MineButton::rightClicked, this, &PlayingWidget::flagBlock);
 
@@ -308,7 +308,7 @@ void PlayingWidget::openBlock(int r, int c) {
             if (isdigit(qPrintable(button->text())[0]))
                 continue;
 
-            button->setText(maskTxt, resource_p.get());
+            button->setText(maskTxt);
         }
     }
 
@@ -327,7 +327,7 @@ void PlayingWidget::flagBlock(int r, int c) {
     updateInfoBox();
     // draw
     MineButton* button = qobject_cast<MineButton*>(guiBoard->itemAtPosition(r, c)->widget());
-    button->setText(board_p->getMask(r, c), resource_p.get());
+    button->setText(board_p->getMask(r, c));
 
     // check if game over
     checkIfGameOver();
