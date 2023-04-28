@@ -11,6 +11,8 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QFont>
+#include <QSoundEffect>
+#include <QMediaPlayer>
 #include <string>
 #include <cstring>
 
@@ -41,9 +43,20 @@ int startGUIGame(int argc, char* argv[]) {
     QFont defaultFont("nomospace", 10);
     QApplication::setFont(defaultFont);
 
+    // 載入資源
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
     std::shared_ptr<QT_ResourcePack> resource_p = std::make_shared<QT_ResourcePack>(QCoreApplication::applicationDirPath() + "/resource");
 
+    // bgm
+    QScopedPointer<QMediaPlayer> bgm(new QMediaPlayer);
+    bgm->setMedia(resource_p->getSoundUrl("bgm.mp3"));
+    bgm->play();
+    QObject::connect(bgm.get(), &QMediaPlayer::stateChanged, bgm.get(), [bgm = bgm.get()](QMediaPlayer::State state) {
+        if (state == QMediaPlayer::StoppedState)
+            bgm->play();
+    });
+
+    // 建立Widget
     QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p, resource_p));
     QScopedPointer<PlayingWidget> playing(new PlayingWidget(board_p, resource_p));
 

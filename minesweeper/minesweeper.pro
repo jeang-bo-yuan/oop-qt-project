@@ -1,4 +1,4 @@
-QT = widgets
+QT += widgets multimedia
 
 CONFIG += c++17 cmdline
 
@@ -15,9 +15,6 @@ SOURCES += \
         QT_ResourcePack.cpp \
         command.cpp \
         main.cpp
-
-CONFIG += lrelease
-CONFIG += embed_translations
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
