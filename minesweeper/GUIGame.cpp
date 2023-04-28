@@ -38,12 +38,11 @@
  */
 int startGUIGame(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    QDir::setCurrent(QCoreApplication::applicationDirPath());    // 將工作目錄設成可執行檔所在目錄
     QFont defaultFont("nomospace", 10);
     QApplication::setFont(defaultFont);
 
     std::shared_ptr<GameBoard> board_p = std::make_shared<GameBoard>();
-    std::shared_ptr<QT_ResourcePack> resource_p = std::make_shared<QT_ResourcePack>(QDir::currentPath() + "/resource");
+    std::shared_ptr<QT_ResourcePack> resource_p = std::make_shared<QT_ResourcePack>(QCoreApplication::applicationDirPath() + "/resource");
 
     QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p, resource_p));
     QScopedPointer<PlayingWidget> playing(new PlayingWidget(board_p, resource_p));
@@ -87,14 +86,13 @@ StandbyWidget::StandbyWidget(std::shared_ptr<GameBoard> p, std::shared_ptr<QT_Re
         QWidget* stack1 = new QWidget;
         QHBoxLayout* sLayout1 = new QHBoxLayout(stack1);
 
-        loader1File->setText("resource/boards/board1.txt");
-        QDir defaultFilePath(QDir::current());
+        QDir currentFilePath(QDir::current());
         QPushButton* fileBut = new QPushButton("browse...");
-        QFileDialog* fileDialog = new QFileDialog(this, "Board File", defaultFilePath.absolutePath() + "/resource/boards", "*.txt");
+        QFileDialog* fileDialog = new QFileDialog(this, "Board File", currentFilePath.absolutePath() + "/resource/boards/", "*.txt");
 
         QObject::connect(fileBut, &QPushButton::clicked, fileDialog, &QFileDialog::exec);
-        QObject::connect(fileDialog, &QFileDialog::fileSelected, loader1File, [this, defaultFilePath] (QString file) {
-            loader1File->setText(defaultFilePath.relativeFilePath(file));
+        QObject::connect(fileDialog, &QFileDialog::fileSelected, loader1File, [this, currentFilePath] (QString file) {
+            loader1File->setText(currentFilePath.relativeFilePath(file));
         });
 
         sLayout1->addWidget(new QLabel("Board File: "), 1);
