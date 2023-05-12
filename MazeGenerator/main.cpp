@@ -37,6 +37,7 @@ inline Field* getFromGrid(QGridLayout* gLayout, int r, int c) {
         return qobject_cast<Field*>(p->widget());
 }
 
+// 實作drawMaze
 void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
     if (tasks.empty()) return;
 
@@ -88,17 +89,15 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
 
         const int Height = to.row - from.row + 1;
         const int Width = to.col - from.col + 1;
-        const bool DontChosePosOnEdge = Height > 2 && Width > 2;
+        //! 長寬都大於2時就不要選牆邊的點
+        const bool DontChoosePosOnEdge = Height > 2 && Width > 2;
         Position randPos = {-1, -1};
-        while (true) {
+        if (DontChoosePosOnEdge) {
+            randPos.row = from.row + 1 + rand() % (Height - 2);
+            randPos.col = from.col + 1 + rand() % (Width - 2);
+        } else {
             randPos.row = from.row + rand() % Height;
             randPos.col = from.col + rand() % Width;
-            //! 長寬都大於2時就不要選牆邊的點
-            if (DontChosePosOnEdge) {
-                if (randPos.row == from.row || randPos.row == to.row || randPos.col == from.col || randPos.col == to.col)
-                    continue;
-            }
-            break;
         }
 
         int drawH = (Height == 2 ? false :  //! 高只有2，強制鉛直畫牆
