@@ -50,19 +50,17 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
     // the range of drawing
     QList<Field*> range;
     // 將函式正在處理的範圍框起來
-    auto markRange = [&range]() {
+    auto markRange = [&range, this]() {
         for (Field* p : range) {
-            p->setFrameStyle(QFrame::Panel | QFrame::Raised);
-            p->repaint();
+            emit setFrameStyle(p, QFrame::Panel | QFrame::Raised);
         }
         QThread::msleep(500);
     };
     // 取消框起來
-    auto unmarkRange = [&range]() {
+    auto unmarkRange = [&range, this]() {
         QThread::msleep(500);
         for (Field* p : range) {
-            p->setFrameStyle(QFrame::NoFrame);
-            p->repaint();
+            emit setFrameStyle(p, QFrame::NoFrame);
         }
     };
 
@@ -108,8 +106,7 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
             for (int c = from.col; c <= to.col; ++c) {
                 if (c == randPos.col) continue;
                 Field* p = getFromGrid(gLayout, randPos.row, c);
-                p->setBackgroundRole(QPalette::AlternateBase);
-                p->repaint();
+                emit setBackgroundRole(p, QPalette::AlternateBase);
             }
 
             // add clear wall task
@@ -125,8 +122,7 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
             for (int r = from.row; r <= to.row; ++r) {
                 if (r == randPos.row) continue;
                 Field* p = getFromGrid(gLayout, r, randPos.col);
-                p->setBackgroundRole(QPalette::AlternateBase);
-                p->repaint();
+                emit setBackgroundRole(p, QPalette::AlternateBase);
             }
 
             // add clear wall task
@@ -160,8 +156,7 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
 
         // clear wall
         for (Field* p : range) {
-            p->setBackgroundRole(QPalette::Base);
-            p->repaint();
+            emit setBackgroundRole(p, QPalette::Base);
         }
 
         // unmark

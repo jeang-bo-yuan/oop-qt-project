@@ -5,7 +5,7 @@
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::Widget), gLayout(new QGridLayout)
+    , ui(new Ui::Widget), gLayout(new QGridLayout), mazeGen(gLayout, this)
 {
     ui->setupUi(this);
     // 設置右方的工具欄
@@ -27,12 +27,24 @@ Widget::Widget(QWidget *parent)
     ui->board->setPalette(myPalette);
 
     // connect
+    // on -> single, off -> not single
+    connect(ui->singleStepBox, &QCheckBox::toggled, &mazeGen, &MazeGenerator::setSingleShot);
+    // 不同文字
+    connect(ui->singleStepBox, &QCheckBox::toggled, this, [this](bool on) {
+        if (on) {
+            ui->nextStepBut->setText("Next Step");
+        }
+        else {
+            ui->nextStepBut->setText("Continue");
+        }
+    });
     connect(ui->newBoardBut, &QPushButton::clicked, this, &Widget::newBoard);
     connect(ui->nextStepBut, &QPushButton::clicked, this, &Widget::next);
-    connect(&infiniteNext, &QTimer::timeout, this, [this]() {
-        MazeGenerator::drawMaze(gLayout, tasks);
-    });
     connect(ui->stopBut, &QPushButton::clicked, this, &Widget::stop);
+    connect(&mazeGen, &MazeGenerator::finished, this, &Widget::stop);
+    // multithreading
+    connect(&mazeGen, &MazeGenerator::setFrameStyle, this, [](Field* p, int i) {p->setFrameStyle(i);}, Qt::QueuedConnection);
+    connect(&mazeGen, &MazeGenerator::setBackgroundRole, this, [](Field* p, QPalette::ColorRole r) {p->setBackgroundRole(r);}, Qt::QueuedConnection);
 }
 
 Widget::~Widget()
@@ -48,16 +60,6 @@ void Widget::clear()
     }
 }
 
-void Widget::next()
-{
-    if (ui->singleStepBox->isChecked())
-        MazeGenerator::drawMaze(gLayout, tasks);
-    else {
-        ui->stopBut->setVisible(true);
-        infiniteNext.start(1);
-    }
-}
-
 void Widget::newBoard()
 {
     clear();
@@ -69,21 +71,31 @@ void Widget::newBoard()
             gLayout->addWidget(frame, r, c);
         }
     }
-
-    while(!tasks.empty()) {
-        tasks.pop();
-    }
-    tasks.emplace(MazeGenerator::Task::DRAW_AND_DIVIDE
-                  , Position{0, 0}
-                  , Position{row - 1, col - 1});
+    mazeGen.init(row, col);
     qDebug() << row << '*' << col;
+}
+
+void Widget::next()
+{
+    if (!ui->singleStepBox->isChecked())
+        ui->stopBut->setVisible(true);
+    ui->nextStepBut->setDisabled(true);
+    ui->newBoardBut->setDisabled(true);
+    ui->rowSpin->setDisabled(true);
+    ui->colSpin->setDisabled(true);
+    ui->singleStepBox->setDisabled(true);
+    mazeGen.start();
 }
 
 void Widget::stop()
 {
     ui->stopBut->setVisible(false);
-    infiniteNext.stop();
-
+    ui->nextStepBut->setDisabled(false);
+    ui->newBoardBut->setDisabled(false);
+    ui->rowSpin->setDisabled(false);
+    ui->colSpin->setDisabled(false);
+    ui->singleStepBox->setDisabled(false);
+    mazeGen.stop();
 }
 
 

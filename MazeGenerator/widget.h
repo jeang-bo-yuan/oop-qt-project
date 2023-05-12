@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QThread>
 
 
 QT_BEGIN_NAMESPACE
@@ -20,36 +21,6 @@ QT_END_NAMESPACE
 struct Position {
     int row;
     int col;
-};
-
-/**
- * @brief 迷宮生成器
- */
-class MazeGenerator {
-public:
-    enum class Task { CLEAR_WALL_V, CLEAR_WALL_H, DRAW_AND_DIVIDE};
-    /**
-     * @brief 存著drawMaze要做的工作的stack，每個元素皆是一個tuple
-     * @details
-     * 代表的意義
-     * 1. CLEAR_WALL_V + pos + flag
-     *      清掉pos上、下的牆壁；flag := { 可清上, 可清下 }
-     * 2. CLEAR_WALL_H + pos + flag
-     *      清掉pos左、右的牆壁；flag := { 可清左, 可清右 }
-     * 3. DRAW_AND_DIVIDE + from + to
-     *      對from和to所圍範圍畫迷宮，畫完後將「清牆壁」+「畫迷宮」*(0 ~ 2) 推入stack
-     *
-     * 清牆壁時不要清超出自己繪畫範圍的點
-     */
-    typedef std::stack<std::tuple<Task, Position, Position>> TaskStack_t;
-    /**
-     * @brief 在gLayout上畫迷宮，裡面必須存Field
-     * @param gLayout - QGridLayout
-     * @param tasks - 為了實現逐步執行的功能，所以用tasks堆疊來模擬遞迴
-     * @post 下一層遞迴會儲存在tasks中，後存進去的先執行
-     * @details 使用的演算法：recursive division
-     */
-    static void drawMaze(QGridLayout* gLayout, TaskStack_t& tasks);
 };
 
 /**
@@ -84,6 +55,75 @@ public:
 };
 
 /**
+ * @brief 迷宮生成器
+ */
+class MazeGenerator : public QThread {
+    Q_OBJECT
+
+private:
+    enum class Task { CLEAR_WALL_V, CLEAR_WALL_H, DRAW_AND_DIVIDE};
+    /**
+     * @brief 存著drawMaze要做的工作的stack，每個元素皆是一個tuple
+     * @details
+     * 代表的意義
+     * 1. CLEAR_WALL_V + pos + flag
+     *      清掉pos上、下的牆壁；flag := { 可清上, 可清下 }
+     * 2. CLEAR_WALL_H + pos + flag
+     *      清掉pos左、右的牆壁；flag := { 可清左, 可清右 }
+     * 3. DRAW_AND_DIVIDE + from + to
+     *      對from和to所圍範圍畫迷宮，畫完後將「清牆壁」+「畫迷宮」*(0 ~ 2) 推入stack
+     *
+     * 清牆壁時不要清超出自己繪畫範圍的點
+     */
+    typedef std::stack<std::tuple<Task, Position, Position>> TaskStack_t;
+    /**
+     * @brief 在gLayout上畫迷宮，裡面必須存Field
+     * @param gLayout - QGridLayout
+     * @param tasks - 為了實現逐步執行的功能，所以用tasks堆疊來模擬遞迴
+     * @post 下一層遞迴會儲存在tasks中，後存進去的先執行
+     * @details 使用的演算法：recursive division
+     */
+    void drawMaze(QGridLayout* gLayout, TaskStack_t& tasks);
+
+public:
+    MazeGenerator(QGridLayout* gLayout, QWidget* parent=nullptr) : QThread(parent), gLayout(gLayout), isSingle(true) {}
+
+public slots:
+    void setSingleShot(bool _isSingle) {
+        isSingle = _isSingle;
+    }
+    void init(int rowSize, int colSize) {
+        while(!tasks.empty())
+            tasks.pop();
+        tasks.emplace(Task::DRAW_AND_DIVIDE, Position{0,0}, Position{rowSize - 1, colSize - 1});
+    }
+    void stop() { stopped = true; }
+
+signals:
+    void setFrameStyle(Field* p, int);
+    void setBackgroundRole(Field* p, QPalette::ColorRole);
+
+protected:
+    void run() override {
+        srand(time(NULL));
+        stopped = false;
+        qDebug() << "running " << isSingle << gLayout;
+        if (isSingle)
+            drawMaze(gLayout, tasks);
+        else {
+            while (!tasks.empty() && !stopped)
+                drawMaze(gLayout, tasks);
+        }
+    }
+
+private:
+    QGridLayout* gLayout;
+    TaskStack_t tasks;
+    bool isSingle;
+    bool stopped;
+};
+
+/**
  * @brief 顯示用Widget
  */
 class Widget : public QWidget
@@ -93,8 +133,7 @@ class Widget : public QWidget
 private:
     Ui::Widget *ui;
     QGridLayout* gLayout;
-    MazeGenerator::TaskStack_t tasks;
-    QTimer infiniteNext;
+    MazeGenerator mazeGen;
 
 public:
     Widget(QWidget *parent = nullptr);
@@ -103,11 +142,11 @@ public:
 public slots:
     //! 清空地圖
     void clear();
-    //! 下一步
-    void next();
     //! 新地圖
     void newBoard();
-    //! 停止無窮迴圈
+    //! 按下nextBut
+    void next();
+    //! 按下stop按鈕
     void stop();
 };
 
