@@ -10,6 +10,7 @@
 #include <QPalette>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QTimer>
 
 
 QT_BEGIN_NAMESPACE
@@ -93,6 +94,7 @@ private:
     Ui::Widget *ui;
     QGridLayout* gLayout;
     MazeGenerator::TaskStack_t tasks;
+    QTimer infiniteNext;
 
 public:
     Widget(QWidget *parent = nullptr);
@@ -105,6 +107,8 @@ public slots:
     void next();
     //! 新地圖
     void newBoard();
+    //! 停止無窮迴圈
+    void stop();
 };
 
 #endif // WIDGET_H

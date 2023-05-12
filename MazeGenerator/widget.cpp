@@ -12,6 +12,8 @@ Widget::Widget(QWidget *parent)
     ui->verticalLayout->setAlignment(Qt::AlignCenter);
     ui->newBoardBut->setFixedWidth(150);
     ui->nextStepBut->setFixedWidth(150);
+    ui->stopBut->setFixedWidth(150);
+    ui->stopBut->setVisible(false);
 
     // 設定格子的佈局
     gLayout->setSpacing(0);
@@ -24,8 +26,13 @@ Widget::Widget(QWidget *parent)
     myPalette.setColor(QPalette::Dark, QColor(19, 219, 4));
     ui->board->setPalette(myPalette);
 
+    // connect
     connect(ui->newBoardBut, &QPushButton::clicked, this, &Widget::newBoard);
     connect(ui->nextStepBut, &QPushButton::clicked, this, &Widget::next);
+    connect(&infiniteNext, &QTimer::timeout, this, [this]() {
+        MazeGenerator::drawMaze(gLayout, tasks);
+    });
+    connect(ui->stopBut, &QPushButton::clicked, this, &Widget::stop);
 }
 
 Widget::~Widget()
@@ -46,9 +53,8 @@ void Widget::next()
     if (ui->singleStepBox->isChecked())
         MazeGenerator::drawMaze(gLayout, tasks);
     else {
-        while(!tasks.empty()) {
-            MazeGenerator::drawMaze(gLayout, tasks);
-        }
+        ui->stopBut->setVisible(true);
+        infiniteNext.start(1);
     }
 }
 
@@ -71,6 +77,13 @@ void Widget::newBoard()
                   , Position{0, 0}
                   , Position{row - 1, col - 1});
     qDebug() << row << '*' << col;
+}
+
+void Widget::stop()
+{
+    ui->stopBut->setVisible(false);
+    infiniteNext.stop();
+
 }
 
 
