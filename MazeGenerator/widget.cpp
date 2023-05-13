@@ -40,6 +40,16 @@ Widget::Widget(QWidget *parent)
     });
     // 格線提示
     connect(ui->hintBox, &QCheckBox::toggled, &mazeGen, &MazeGenerator::setHint);
+    // 延遲
+    connect(ui->speedSlider, &QSlider::valueChanged, &mazeGen, [p = &mazeGen](int value) {
+        // assume value is between [0, 1000]
+        float x = value / 100.f;
+        // 改變數值變化的幅度，x越大下降越快，x越小上升越快
+        // f(x) = 2 x^3 - 30 x^2 + 1000
+        float ms = 2.f * x * x * x + -30.f * x * x + 1000.f;
+        qDebug() << "ms: " << ms;
+        p->setDelayMs(ms);
+    });
     // 新盤面
     connect(ui->newBoardBut, &QPushButton::clicked, this, &Widget::newBoard);
     // 下一步

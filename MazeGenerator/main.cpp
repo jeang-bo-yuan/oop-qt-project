@@ -57,11 +57,11 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
         for (Field* p : range) {
             emit setFrameStyle(p, QFrame::Panel | QFrame::Raised);
         }
-        QThread::msleep(500);
+        QThread::msleep(delayMs);
     };
     // 取消框起來
     auto unmarkRange = [&range, this, hasHintForThisTime]() {
-        QThread::msleep(500);
+        QThread::msleep(delayMs);
         if (!hasHintForThisTime) return;
         for (Field* p : range) {
             emit setFrameStyle(p, QFrame::NoFrame);

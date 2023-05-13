@@ -86,7 +86,7 @@ private:
     void drawMaze(QGridLayout* gLayout, TaskStack_t& tasks);
 
 public:
-    MazeGenerator(QGridLayout* gLayout, QWidget* parent=nullptr) : QThread(parent), gLayout(gLayout), isSingle(true), hint(true) {}
+    MazeGenerator(QGridLayout* gLayout, QWidget* parent=nullptr) : QThread(parent), gLayout(gLayout), isSingle(true), hint(true), delayMs(500) {}
 
 public slots:
     void setSingleShot(bool _isSingle) { isSingle = _isSingle; }
@@ -97,6 +97,7 @@ public slots:
         tasks.emplace(Task::DRAW_AND_DIVIDE, Position{0,0}, Position{rowSize - 1, colSize - 1});
     }
     void setHint(bool _hint) { hint = _hint; }
+    void setDelayMs(unsigned long ms) { delayMs = ms; }
     void stop() { stopped = true; }
 
 signals:
@@ -125,6 +126,8 @@ private:
     bool hint;
     //! 是否停止
     bool stopped;
+    //! 延遲的毫秒數
+    unsigned long delayMs;
 };
 
 /**
