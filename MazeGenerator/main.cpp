@@ -47,18 +47,22 @@ void MazeGenerator::drawMaze(QGridLayout* gLayout, TaskStack_t& tasks) {
     const Position to = std::get<2>(tasks.top());
     tasks.pop();
 
+    // 確認這次需不需要hint
+    const bool hasHintForThisTime = hint;
     // the range of drawing
     QList<Field*> range;
     // 將函式正在處理的範圍框起來
-    auto markRange = [&range, this]() {
+    auto markRange = [&range, this, hasHintForThisTime]() {
+        if (!hasHintForThisTime) return;
         for (Field* p : range) {
             emit setFrameStyle(p, QFrame::Panel | QFrame::Raised);
         }
         QThread::msleep(500);
     };
     // 取消框起來
-    auto unmarkRange = [&range, this]() {
+    auto unmarkRange = [&range, this, hasHintForThisTime]() {
         QThread::msleep(500);
+        if (!hasHintForThisTime) return;
         for (Field* p : range) {
             emit setFrameStyle(p, QFrame::NoFrame);
         }

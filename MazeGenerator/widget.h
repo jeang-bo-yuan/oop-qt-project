@@ -86,17 +86,17 @@ private:
     void drawMaze(QGridLayout* gLayout, TaskStack_t& tasks);
 
 public:
-    MazeGenerator(QGridLayout* gLayout, QWidget* parent=nullptr) : QThread(parent), gLayout(gLayout), isSingle(true) {}
+    MazeGenerator(QGridLayout* gLayout, QWidget* parent=nullptr) : QThread(parent), gLayout(gLayout), isSingle(true), hint(true) {}
 
 public slots:
-    void setSingleShot(bool _isSingle) {
-        isSingle = _isSingle;
-    }
+    void setSingleShot(bool _isSingle) { isSingle = _isSingle; }
+    //! 設定最一開始的繪製範圍，gLayout包含的Field的數量、分佈修改後都應呼叫它
     void init(int rowSize, int colSize) {
         while(!tasks.empty())
             tasks.pop();
         tasks.emplace(Task::DRAW_AND_DIVIDE, Position{0,0}, Position{rowSize - 1, colSize - 1});
     }
+    void setHint(bool _hint) { hint = _hint; }
     void stop() { stopped = true; }
 
 signals:
@@ -119,7 +119,11 @@ protected:
 private:
     QGridLayout* gLayout;
     TaskStack_t tasks;
+    //! 是否只做一次
     bool isSingle;
+    //! 是否有格線提示
+    bool hint;
+    //! 是否停止
     bool stopped;
 };
 

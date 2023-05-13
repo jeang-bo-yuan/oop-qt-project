@@ -38,8 +38,13 @@ Widget::Widget(QWidget *parent)
             ui->nextStepBut->setText("Continue");
         }
     });
+    // 格線提示
+    connect(ui->hintBox, &QCheckBox::toggled, &mazeGen, &MazeGenerator::setHint);
+    // 新盤面
     connect(ui->newBoardBut, &QPushButton::clicked, this, &Widget::newBoard);
+    // 下一步
     connect(ui->nextStepBut, &QPushButton::clicked, this, &Widget::next);
+    // 停止
     connect(ui->stopBut, &QPushButton::clicked, this, &Widget::stop);
     connect(&mazeGen, &MazeGenerator::finished, this, &Widget::stop);
     // multithreading
@@ -77,8 +82,10 @@ void Widget::newBoard()
 
 void Widget::next()
 {
-    if (!ui->singleStepBox->isChecked())
+    if (!ui->singleStepBox->isChecked()) {
+        ui->nextStepBut->setVisible(false);
         ui->stopBut->setVisible(true);
+    }
     ui->nextStepBut->setDisabled(true);
     ui->newBoardBut->setDisabled(true);
     ui->rowSpin->setDisabled(true);
@@ -89,6 +96,7 @@ void Widget::next()
 
 void Widget::stop()
 {
+    ui->nextStepBut->setVisible(true);
     ui->stopBut->setVisible(false);
     ui->nextStepBut->setDisabled(false);
     ui->newBoardBut->setDisabled(false);
