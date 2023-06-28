@@ -50,11 +50,13 @@ int startGUIGame(int argc, char* argv[]) {
     // bgm
     QScopedPointer<QMediaPlayer> bgm(new QMediaPlayer);
     bgm->setMedia(resource_p->getSoundUrl("bgm.mp3"));
-    bgm->play();
-    QObject::connect(bgm.get(), &QMediaPlayer::stateChanged, bgm.get(), [bgm = bgm.get()](QMediaPlayer::State state) {
-        if (state == QMediaPlayer::StoppedState)
-            bgm->play();
-    });
+    if (!bgm.isNull()) {
+        bgm->play();
+        QObject::connect(bgm.get(), &QMediaPlayer::stateChanged, bgm.get(), [bgm = bgm.get()](QMediaPlayer::State state) {
+            if (state == QMediaPlayer::StoppedState)
+                bgm->play();
+        });
+    }
 
     // 建立Widget
     QScopedPointer<StandbyWidget> standby(new StandbyWidget(board_p, resource_p));
